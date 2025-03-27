@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gửi dữ liệu vào Google Sheets</title>
+</head>
+<body>
+    <h2>Nhập thông tin</h2>
+    <form id="myForm">
+        <label for="ten">Tên:</label>
+        <input type="text" id="ten" name="ten" required><br><br>
+
+        <label for="sdt">SĐT:</label>
+        <input type="tel" id="sdt" name="sdt" required><br><br>
+
+        <button type="submit">Gửi</button>
+    </form>
+
+    <script>
+        document.getElementById("myForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+            let formData = new FormData(this);
+            let url = "https://script.google.com/macros/s/AKfycbxfd71hzL4bmZsXFz8fw6nxG9G7a9zkTtxCq2_ZHdmBRln-1jWhCS_KLD-JIdYye77f/exec"; // Thay bằng URL Apps Script
+
+            fetch(url, {
+                method: "POST",
+                body: new URLSearchParams(formData)
+            })
+            .then(response => response.text())
+            .then(data => {
+                alert("Dữ liệu đã được gửi!");
+                document.getElementById("myForm").reset();
+            })
+            .catch(error => console.error("Lỗi:", error));
+        });
+    </script>
+</body>
+</html>
