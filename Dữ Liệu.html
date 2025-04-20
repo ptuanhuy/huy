@@ -14,6 +14,15 @@
         <label for="sdt">SĐT:</label>
         <input type="tel" id="sdt" name="sdt" required><br><br>
 
+        <label for="file">File:</label>
+        <input type="text" id="file" name="file" placeholder="Link hoặc mô tả file"><br><br>
+
+        <label for="url">URL:</label>
+        <input type="text" id="url" name="url" placeholder="Nhập đường dẫn liên quan"><br><br>
+
+        <!-- Token bảo vệ -->
+        <input type="hidden" name="token" value="ma-bao-ve-cua-ban">
+
         <button type="submit">Gửi</button>
     </form>
 
@@ -21,7 +30,9 @@
         document.getElementById("myForm").addEventListener("submit", function(event) {
             event.preventDefault();
             let formData = new FormData(this);
-            let url = "https://script.google.com/macros/s/AKfycbw4T1Q3EwTeDzGOhPNY6nvYh-fi1eI3tPlRMlaqI9rlYxeRSfOw7HbzBANpidBmfb93/exec"; // Thay bằng URL Apps Script
+
+            // ⚠️ Đổi lại đường dẫn sau khi bạn triển khai Apps Script
+            let url = "https://script.google.com/macros/s/AKfycbw4T1Q3EwTeDzGOhPNY6nvYh-fi1eI3tPlRMlaqI9rlYxeRSfOw7HbzBANpidBmfb93/exec";
 
             fetch(url, {
                 method: "POST",
@@ -29,7 +40,7 @@
             })
             .then(response => response.text())
             .then(data => {
-                alert("Dữ liệu đã được gửi!");
+                alert(data);
                 document.getElementById("myForm").reset();
             })
             .catch(error => console.error("Lỗi:", error));
