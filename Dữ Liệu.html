@@ -1,50 +1,190 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Gửi dữ liệu vào Google Sheets</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Gửi dữ liệu vào Google Sheets</title>
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body {
+      font-family: 'Raleway', sans-serif;
+      margin: 0;
+      background: linear-gradient(to right, #f0f2f5, #dff1ff);
+    }
+    .w3-sidebar {
+      width: 250px;
+      background-color: #111;
+      color: white;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      display: none;
+      z-index: 2;
+    }
+    .w3-sidebar a, .w3-sidebar button {
+      font-size: 16px;
+      transition: 0.2s;
+    }
+    .w3-sidebar a:hover, .w3-sidebar button:hover {
+      background-color: #f44336 !important;
+      color: white !important;
+    }
+    .main-content {
+      margin-left: 0;
+      transition: margin-left 0.3s;
+      padding: 20px;
+    }
+    .menu-toggle {
+      background-color: #111;
+      color: #f9ff00;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+    .menu-toggle:hover {
+      background-color: #333;
+    }
+    .form-container {
+      background: #ffffff;
+      padding: 30px 40px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+      width: 100%;
+      max-width: 500px;
+      margin: 60px auto;
+    }
+    .form-container h2 {
+      margin-bottom: 20px;
+      text-align: center;
+      color: #333;
+    }
+    label {
+      display: block;
+      margin: 12px 0 6px;
+      font-weight: bold;
+    }
+    input[type="text"], input[type="tel"] {
+      width: 100%;
+      padding: 10px;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button[type="submit"] {
+      width: 100%;
+      margin-top: 20px;
+      padding: 12px;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    .dropdown-container {
+      display: none;
+      background-color: #222;
+      padding-left: 20px;
+    }
+    .dropdown-btn {
+      background: none;
+      border: none;
+      color: #f9ff00;
+      padding: 10px 16px;
+      text-align: left;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
 </head>
 <body>
-    <h2>Nhập thông tin</h2>
+
+<!-- Sidebar -->
+<nav class="w3-sidebar w3-bar-block w3-animate-left" id="mySidebar">
+  <button class="menu-toggle" onclick="w3_close()"><i class="fa fa-times"></i> Đóng Menu</button>
+  <a href="index.html" class="w3-bar-item w3-button"><span style="color:#FF0000">Trang Chủ</span></a>
+  <a href="https://sites.google.com/view/phan-tuan-huy" class="w3-bar-item w3-button"><span style="color:#F9FF00">Giới Thiệu</span></a>
+  <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button"><span style="color:#E500FF">Thông Tin Liên Hệ</span></a>
+  <a href="https://www.youtube.com/@PhanTuanHuy12" class="w3-bar-item w3-button"><span style="color:#15FF00">YouTube</span></a>
+
+  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">🌐 Web <i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container" id="webDropdown">
+    <a href="https://sun.aweray.com/vi/" class="w3-bar-item w3-button">Aweray</a>
+    <a href="#" class="w3-bar-item w3-button">...</a>
+    <a href="#" class="w3-bar-item w3-button">...</a>
+  </div>
+
+  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">📞 Hỗ Trợ <i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container" id="supportDropdown">
+    <a href="https://www.facebook.com/TuanHuy130" class="w3-bar-item w3-button"><span style="color:#1400FF">Facebook</span></a>
+    <a href="#" class="w3-bar-item w3-button"><span style="color:#FF0004">Discord</span></a>
+    <a href="#" class="w3-bar-item w3-button">Đang Cập Nhật ...</a>
+  </div>
+</nav>
+
+<!-- Toggle Button -->
+<div class="w3-bar" style="background-color:#111">
+  <button class="menu-toggle" onclick="w3_open()">☰ Mở Menu</button>
+</div>
+
+<!-- Main Content -->
+<div class="main-content" id="mainContent">
+  <div class="form-container">
+    <h2>Gửi thông tin</h2>
     <form id="myForm">
-        <label for="ten">Tên:</label>
-        <input type="text" id="ten" name="ten" required><br><br>
+      <label for="ten">Tên:</label>
+      <input type="text" id="ten" name="ten" required />
 
-        <label for="sdt">SĐT:</label>
-        <input type="tel" id="sdt" name="sdt" required><br><br>
+      <label for="sdt">SĐT:</label>
+      <input type="tel" id="sdt" name="sdt" required />
 
-        <label for="file">File:</label>
-        <input type="text" id="file" name="file" placeholder="Link hoặc mô tả file"><br><br>
+      <input type="hidden" name="token" value="ma-bao-ve-cua-ban" />
 
-        <label for="url">URL:</label>
-        <input type="text" id="url" name="url" placeholder="Nhập đường dẫn liên quan"><br><br>
-
-        <!-- Token bảo vệ -->
-        <input type="hidden" name="token" value="ma-bao-ve-cua-ban">
-
-        <button type="submit">Gửi</button>
+      <button type="submit"><i class="fas fa-paper-plane"></i> Gửi</button>
     </form>
+  </div>
+</div>
 
-    <script>
-        document.getElementById("myForm").addEventListener("submit", function(event) {
-            event.preventDefault();
-            let formData = new FormData(this);
+<!-- JavaScript -->
+<script>
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("mainContent").style.marginLeft = "250px";
+}
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("mainContent").style.marginLeft = "0";
+}
+function toggleDropdown(id) {
+  var dropdown = document.getElementById(id);
+  dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
+}
+document.getElementById("myForm").addEventListener("submit", function(event) {
+  event.preventDefault();
+  let formData = new FormData(this);
+  let url = "https://script.google.com/macros/s/AKfycbw4T1Q3EwTeDzGOhPNY6nvYh-fi1eI3tPlRMlaqI9rlYxeRSfOw7HbzBANpidBmfb93/exec";
 
-            // ⚠️ Đổi lại đường dẫn sau khi bạn triển khai Apps Script
-            let url = "https://script.google.com/macros/s/AKfycbw4T1Q3EwTeDzGOhPNY6nvYh-fi1eI3tPlRMlaqI9rlYxeRSfOw7HbzBANpidBmfb93/exec";
+  fetch(url, {
+    method: "POST",
+    body: new URLSearchParams(formData)
+  })
+  .then(response => response.text())
+  .then(data => {
+    alert(data);
+    document.getElementById("myForm").reset();
+  })
+  .catch(error => console.error("Lỗi:", error));
+});
+</script>
 
-            fetch(url, {
-                method: "POST",
-                body: new URLSearchParams(formData)
-            })
-            .then(response => response.text())
-            .then(data => {
-                alert(data);
-                document.getElementById("myForm").reset();
-            })
-            .catch(error => console.error("Lỗi:", error));
-        });
-    </script>
 </body>
 </html>
