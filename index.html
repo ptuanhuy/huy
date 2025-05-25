@@ -1,143 +1,202 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<title>Phan Tuấn Huy</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="shortcut icon" type="Png.png" href="noFilter.png"/>
-<style>
-	.BG{
-		text-align: center;
-		
-	}
-	.w3-display-bottommiddle w3-container w3-text-white w3-padding-32 w3-hide-small{
-		text-align: center;
-	}
-	
-body {font-family: "Lato", sans-serif}
-.mySlides {display: none}
-</style>
+  <title>Phan Tuấn Huy</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:600&display=swap">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="shortcut icon" href="noFilter.png" type="image/png" />
+  <style>
+    body {
+      font-family: 'Raleway', sans-serif;
+      background-color: #f1f1f1;
+      margin: 0;
+    }
+
+    /* Sidebar styles */
+    .w3-sidebar {
+      width: 250px;
+      background: #111;
+      color: white;
+      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
+      transition: 0.3s;
+    }
+
+    .w3-sidebar a,
+    .w3-sidebar button {
+      font-size: 16px;
+      transition: 0.2s;
+    }
+
+    .w3-sidebar a:hover,
+    .w3-sidebar button:hover {
+      background-color: #f44336 !important;
+      color: white !important;
+    }
+
+    .main-content {
+      transition: margin-left 0.3s;
+      padding: 20px;
+      margin-left: 0;
+    }
+
+    .menu-toggle {
+      background-color: #111;
+      color: #f9ff00;
+      border: none;
+      padding: 12px 20px;
+      font-size: 18px;
+      cursor: pointer;
+      width: 100%;
+      text-align: left;
+    }
+
+    .menu-toggle:hover {
+      background-color: #333;
+    }
+
+    /* Hero section */
+    .hero {
+      background: url('h.jpg') no-repeat center center/cover;
+      height: 100vh;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      color: white;
+    }
+
+    .hero-overlay {
+      background-color: rgba(0,0,0,0.6);
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .hero p {
+      font-size: 20px;
+    }
+
+    footer i {
+      margin: 0 10px;
+      transition: 0.3s;
+    }
+
+    footer i:hover {
+      color: #f44336;
+    }
+
+    /* Dropdown buttons */
+    .dropdown-btn {
+      background: none;
+      border: none;
+      color: #f9ff00;
+      padding: 10px 16px;
+      text-align: left;
+      width: 100%;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    .dropdown-container {
+      display: none;
+      background-color: #222;
+      padding-left: 20px;
+    }
+
+    @media screen and (max-width: 600px) {
+      .hero h1 {
+        font-size: 32px;
+      }
+    }
+  </style>
 </head>
-	
+
 <body>
 
-<!-- Navbar -->
-	
-<div class="w3-top">
-  <div class="w3-bar w3-black w3-card">
-    <a class="w3-bar-item w3-button w3-padding-large w3-hide-medium w3-hide-large w3-right" href="javascript:void(0)" onclick="myFunction()" title="Toggle Navigation Menu"><i class="fa fa-bars"></i></a>
-    <a href="index.html" class="w3-bar-item w3-button w3-padding-large"><font color="#FF0000">Trang Chủ</font></a>
-    <a href="https://sites.google.com/view/phan-tuan-huy" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><font color="#F9FF00">Giới Thiệu</font></a>
+<!-- Sidebar -->
+<nav class="w3-sidebar w3-bar-block w3-animate-left" style="display:none" id="mySidebar">
+  <button onclick="w3_close()" class="menu-toggle"><i class="fa fa-times"></i> Đóng Menu</button>
+  <a href="index.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Trang Chủ</span></a>
+  <a href="https://sites.google.com/view/phan-tuan-huy" class="w3-bar-item w3-button"><span style="color:#f9ff00">Giới Thiệu</span></a>
+  <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Thông Tin Liên Hệ</span></a>
+  <a href="Dữ Liệu.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Dữ Liệu</span></a>
+  <a href="https://www.youtube.com/@PhanTuanHuy12" class="w3-bar-item w3-button"><span style="color:#f9ff00">YouTube</span></a>
+  <a href="tai ve.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Tải Về</span></a>
+
+  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">🌐 Web <i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container" id="webDropdown">
+    <a href="https://sun.aweray.com/vi/" class="w3-bar-item w3-button">Aweray</a>
     
-    <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><font color="#E500FF">Thông Tin Liên Hệ</font></a>
-	  <a href="Dữ Liệu.html" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><font color="#E500FF">Dữ Liệu</font></a>
-	  <a href="https://www.youtube.com/@PhanTuanHuy12" class="w3-bar-item w3-button w3-padding-large w3-hide-small"><font color="#15FF00">YouTube</font></a>
-	  <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More"><font color="#FF5F00">Web</font><i class="fa fa-caret-down"></i></button> 
-		  
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="https://sun.aweray.com/vi/" class="w3-bar-item w3-button"><font color="#FF0004">Aweray</font></a>
-		  <a href="Highlighted_Answers.docx" class="w3-bar-item w3-button"><font color="#FF0004">Thi</font></a>
-		  <a href="Highlighted_Answers.pdf" class="w3-bar-item w3-button"><font color="#FF0004">Thi PDF</font></a>
-        <a href="https://www.dropbox.com/s/hf05xblk3um85de/Symlink%20Creator.rar?dl=0" class="w3-bar-item w3-button"><font color="#FF0004">Symlink</font></a>
-		  <a href="https://www.thegioididong.com/game-app/tong-hop-cac-lenh-run-thong-dung-trong-windows-10-ban-nen-1282407" class="w3-bar-item w3-button"><font color="#FF0004">Windowns + R</font></a>
-		  <a href="https://www.google.com/maps?q=10.6977036,106.9301423&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button"><font color="#FF0004">Công Ty QFT 1</font></a>
-		  <a href="https://www.google.com/maps?q=10.6988443,106.9317499&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button"><font color="#FF0004">Công Ty Kankio</font></a>
-		  <a href="https://www.google.com/maps?q=10.7132526,106.9521579&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button"><font color="#FF0004">
-Công Ty INOUE</font></a>
-		  <a href="https://www.google.com/maps?q=10.7396389,106.9213336&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button"><font color="#FF0004">Công Ty Á Châu</font></a>
-		  <a href="" class="w3-bar-item w3-button"><font color="#FF0004"></font></a>
-		  <a href="" class="w3-bar-item w3-button"><font color="#FF0004"></font></a>
-      </div>
-    </div>
-	  
-	  
-	  
-    <div class="w3-dropdown-hover w3-hide-small">
-      <button class="w3-padding-large w3-button" title="More"><font color="#FF5F00">Hỗ Trợ</font><i class="fa fa-caret-down"></i></button>     
-      <div class="w3-dropdown-content w3-bar-block w3-card-4">
-        <a href="https://www.facebook.com/TuanHuy130" class="w3-bar-item w3-button"><font color="#1400FF">Facebook</font></a>
-        <a href="#" class="w3-bar-item w3-button"><font color="#FF0004">Discord</font></a>
-        <a href="#" class="w3-bar-item w3-button">Đang Cập Nhật ...</a>
-      </div>
-    </div>
-    <a href="javascript:void(0)" class="w3-padding-large w3-hover-red w3-hide-small w3-right"><i class="fa fa-search"></i></a>
-  </div>
-</div>
-
-<!-- Navbar on small screens (remove the onclick attribute if you want the navbar to always show on top of the content when clicking on the links) -->
-<div id="navDemo" class="w3-bar-block w3-black w3-hide w3-hide-large w3-hide-medium w3-top" style="margin-top:46px">
-  <a href="#band" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">BAND</a>
-  <a href="#tour" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">TOUR</a>
-  <a href="#contact" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">CONTACT</a>
-  <a href="#" class="w3-bar-item w3-button w3-padding-large" onclick="myFunction()">MERCH</a>
-</div>
-
-<!-- Page content -->
-<div class="w3-content" style="max-width:2000px;margin-top:46px">
-
-  <!-- Automatic Slideshow Images -->
-  
-</div>
-  
-  
-  <div>
-  <img src="h.jpg" style="width:100%" width="" height="" alt="" ></div>
-
-  <!-- The Band Section -->
-  <div class="w3-container w3-content w3-center w3-padding-64" style="max-width:800px" id="band">
-    <h2 class="w3-wide">&nbsp;</h2>
+    <a href="https://www.dropbox.com/s/hf05xblk3um85de/Symlink%20Creator.rar?dl=0" class="w3-bar-item w3-button">Symlink</a>
+    <a href="https://www.thegioididong.com/game-app/tong-hop-cac-lenh-run-thong-dung-trong-windows-10-ban-nen-1282407" class="w3-bar-item w3-button">Windows + R</a>
+    <a href="https://www.google.com/maps?q=10.6977036,106.9301423&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button">Công Ty QFT 1</a>
+    <a href="https://www.google.com/maps?q=10.6988443,106.9317499&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button">Công Ty Kankio</a>
   </div>
 
-  <!-- The Tour Section -->
-  <div class="w3-black" id="tour">
-<div class="w3-container w3-content w3-padding-64" style="max-width:800px">
-      
+  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">📞 Hỗ Trợ <i class="fa fa-caret-down"></i></button>
+  <div class="dropdown-container" id="supportDropdown">
+    <a href="https://www.facebook.com/TuanHuy130" class="w3-bar-item w3-button"><span style="color:#1400FF">Facebook</span></a>
+    <a href="#" class="w3-bar-item w3-button">Discord</a>
+    <a href="#" class="w3-bar-item w3-button">Đang Cập Nhật ...</a>
+  </div>
+</nav>
+
+<!-- Nút mở sidebar -->
+<div class="w3-bar w3-black">
+  <button class="menu-toggle" onclick="w3_open()">☰ Mở Menu</button>
 </div>
-<footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge">
-  <footer class="w3-container w3-padding-64 w3-center w3-opacity w3-light-grey w3-xlarge"> <a href="https://www.facebook.com/TuanHuy130"><i class="fa fa-facebook-official w3-hover-opacity"></i></a> <i class="fa fa-instagram w3-hover-opacity"></i> <i class="fa fa-snapchat w3-hover-opacity"></i> <i class="fa fa-pinterest-p w3-hover-opacity"></i> <i class="fa fa-twitter w3-hover-opacity"></i> <i class="fa fa-linkedin w3-hover-opacity"></i>
-    <p class="w3-medium">FB <a href="https://www.facebook.com/TuanHuy130" target="_blank">Huy</a></p>
+
+<!-- Nội dung chính -->
+<div class="main-content" id="mainContent">
+  <header class="hero">
+    <div class="hero-overlay"></div>
+    <div class="hero-content">
+      <h1>Chào mừng đến với Website của Phan Tuấn Huy</h1>
+      <p>Khám phá các liên kết, dự án và hỗ trợ nhanh chóng tại đây</p>
+    </div>
+  </header>
+
+  <footer class="w3-container w3-padding-64 w3-center w3-light-grey w3-opacity w3-xlarge">
+    <a href="https://www.facebook.com/TuanHuy130" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
+    <i class="fa fa-instagram w3-hover-opacity"></i>
+    <i class="fa fa-snapchat w3-hover-opacity"></i>
+    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
+    <i class="fa fa-twitter w3-hover-opacity"></i>
+    <i class="fa fa-linkedin w3-hover-opacity"></i>
+    <p class="w3-medium">FB: <a href="https://www.facebook.com/TuanHuy130" target="_blank">Huy</a></p>
   </footer>
-</footer>
+</div>
 
+<!-- JavaScript -->
 <script>
-// Automatic Slideshow - change image every 4 seconds
-var myIndex = 0;
-carousel();
-
-function carousel() {
-  var i;
-  var x = document.getElementsByClassName("mySlides");
-  for (i = 0; i < x.length; i++) {
-    x[i].style.display = "none";  
-  }
-  myIndex++;
-  if (myIndex > x.length) {myIndex = 1}    
-  x[myIndex-1].style.display = "block";  
-  setTimeout(carousel, 4000);    
+function w3_open() {
+  document.getElementById("mySidebar").style.display = "block";
+  document.getElementById("mainContent").style.marginLeft = "250px";
 }
-
-// Used to toggle the menu on small screens when clicking on the menu button
-function myFunction() {
-  var x = document.getElementById("navDemo");
-  if (x.className.indexOf("w3-show") == -1) {
-    x.className += " w3-show";
-  } else { 
-    x.className = x.className.replace(" w3-show", "");
-  }
+function w3_close() {
+  document.getElementById("mySidebar").style.display = "none";
+  document.getElementById("mainContent").style.marginLeft = "0";
 }
-
-// When the user clicks anywhere outside of the modal, close it
-var modal = document.getElementById('ticketModal');
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
+function toggleDropdown(id) {
+  var dropdown = document.getElementById(id);
+  dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
 }
 </script>
-</div>
+
 </body>
 </html>

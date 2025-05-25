@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="UTF-8">
+  <title>Tải về - Phan Tuấn Huy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Audiowide|Poppins">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, #1d1d1d, #3d3d3d);
+      color: white;
+      padding-top: 60px; /* Dành chỗ cho navbar */
+      padding-bottom: 50px;
+    }
+
+    .header {
+      text-align: center;
+      padding: 50px;
+      background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(to right, #ff416c, #ff4b2b);
+      animation: pulse 6s infinite alternate;
+    }
+
+    @keyframes pulse {
+      0% { background-position: 0% 50%; }
+      100% { background-position: 100% 50%; }
+    }
+
+    .header h1 {
+      font-family: 'Audiowide', cursive;
+      font-size: 48px;
+      margin-bottom: 10px;
+    }
+
+    .download-section {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 30px;
+    }
+
+    .download-item {
+      background-color: #2a2a2a;
+      border-left: 6px solid #ff4b2b;
+      padding: 20px;
+      margin-bottom: 15px;
+      transition: 0.3s;
+      border-radius: 10px;
+    }
+
+    .download-item:hover {
+      transform: scale(1.03);
+      background-color: #3a3a3a;
+    }
+
+    .download-item i {
+      margin-right: 15px;
+      color: #ffcc00;
+    }
+
+    a.download-link {
+      text-decoration: none;
+      color: #ffffff;
+      display: block;
+    }
+
+    a.download-link:hover {
+      color: #ffcc00;
+    }
+
+    .footer {
+      text-align: center;
+      margin-top: 40px;
+      font-size: 14px;
+      opacity: 0.6;
+    }
+
+    /* Navbar custom */
+    .navbar {
+      position: fixed;
+      top: 0;
+      width: 100%;
+      z-index: 10;
+    }
+
+    .w3-bar .w3-bar-item:hover {
+      background-color: #ff4b2b !important;
+      color: #fff !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <div class="w3-bar w3-black w3-card navbar">
+    <a href="index.html" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-home"></i> Trang chủ</a>
+    <a href="#downloads" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-download"></i> Tải về</a>
+    <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-envelope"></i> Liên hệ</a>
+  </div>
+
+  <div class="header" id="downloads">
+    <h1><i class="fas fa-download"></i> Tải Về Tài Liệu</h1>
+    <p>Danh sách các tệp có thể tải về từ Google Drive</p>
+  </div>
+
+  <div class="download-section">
+
+    <div class="download-item">
+      <a class="download-link" href="https://drive.google.com/file/d/123456789/view?usp=sharing" target="_blank">
+        <i class="fas fa-file-word"></i> 
+      </a>
+    </div>
+
+    <div class="download-item">
+      <a class="download-link" href="https://drive.google.com/file/d/abcde54321/view?usp=sharing" target="_blank">
+        <i class="fas fa-file-pdf"></i> 
+      </a>
+    </div>
+
+    <div class="download-item">
+      <a class="download-link" href="https://drive.google.com/file/d/987654321/view?usp=sharing" target="_blank">
+        <i class="fas fa-file-archive"></i> 
+      </a>
+    </div>
+
+    <div class="download-item">
+      <a class="download-link" href="https://drive.google.com/file/d/EXAMPLE123/view?usp=sharing" target="_blank">
+        <i class="fas fa-file-video"></i> 
+      </a>
+    </div>
+
+  </div>
+
+  <div class="footer" id="contact">
+    © 2025 Phan Tuấn Huy - Trang tải về được thiết kế đẹp và sinh động
+  </div>
+
+</body>
+</html>
