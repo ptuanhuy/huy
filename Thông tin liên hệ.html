@@ -1,133 +1,326 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-<title>Phan Tuấn Huy</title>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-<link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato|Raleway:600&display=swap">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="shortcut icon" type="image/png" href="noFilter.png"/>
-<style>
-body {
-  font-family: 'Lato', sans-serif;
-  margin: 0;
-  background-color: #f5f5f5;
-}
-.w3-sidebar {
-  width: 250px;
-  background-color: #111;
-  color: white;
-  transition: 0.3s;
-}
-.w3-sidebar a:hover, .w3-sidebar button:hover {
-  background-color: #f44336 !important;
-  color: white !important;
-}
-.main-content {
-  margin-left: 0;
-  transition: margin-left 0.3s;
-  padding: 20px;
-}
-.menu-toggle {
-  background-color: #111;
-  color: #f9ff00;
-  border: none;
-  padding: 12px 20px;
-  font-size: 18px;
-  cursor: pointer;
-  width: 100%;
-  text-align: left;
-}
-.menu-toggle:hover {
-  background-color: #333;
-}
-.dropdown-btn {
-  background: none;
-  border: none;
-  color: #f9ff00;
-  padding: 10px 16px;
-  text-align: left;
-  width: 100%;
-  font-size: 16px;
-  cursor: pointer;
-}
-.dropdown-container {
-  display: none;
-  background-color: #222;
-  padding-left: 20px;
-}
-</style>
+  <title>Phan Tuấn Huy - Liên Hệ</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Raleway:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="shortcut icon" type="image/png" href="noFilter.png"/>
+  <style>
+    /* --- General Styling & Background --- */
+    body, html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Lato', sans-serif;
+      background-color: #f8f9fa;
+      background-image: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    }
+
+    /* --- Sidebar Styling --- */
+    .sidebar {
+      height: 100%;
+      width: 260px;
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: -260px; /* Bắt đầu ẩn */
+      background: rgba(33, 37, 41, 0.9);
+      backdrop-filter: blur(10px);
+      overflow-x: hidden;
+      transition: left 0.4s ease-in-out;
+      padding-top: 20px;
+      box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .sidebar a, .dropdown-btn {
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 17px;
+      color: #f1f1f1;
+      display: block;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
+    }
+    
+    .sidebar a i, .dropdown-btn i {
+      margin-right: 15px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar a:hover, .dropdown-btn:hover {
+      background-color: #007bff;
+      color: white;
+      padding-left: 25px;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-size: 36px;
+      margin-left: 50px;
+      color: #a1a1a1;
+      transition: color 0.3s, transform 0.3s;
+    }
+
+    .close-btn:hover {
+        color: #f44336;
+        transform: rotate(90deg);
+    }
+
+    .dropdown-container {
+      display: none;
+      background-color: rgba(0,0,0,0.2);
+      padding-left: 20px;
+    }
+
+    .dropdown-container a {
+        font-size: 15px;
+        color: #d1d1d1;
+    }
+
+    /* --- Main Content --- */
+    .main-content {
+      transition: margin-left 0.4s ease-in-out;
+      padding: 20px;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .menu-toggle {
+      font-size: 24px;
+      cursor: pointer;
+      background-color: #212529;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      display: inline-block;
+      border-radius: 8px;
+      transition: background-color 0.3s;
+    }
+    .menu-toggle:hover {
+        background-color: #007bff;
+    }
+
+    /* --- Contact Section --- */
+    .contact-container {
+      flex-grow: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 64px 16px;
+    }
+    
+    .contact-section {
+      max-width: 700px;
+      width: 100%;
+      margin: auto;
+      background: rgba(255, 255, 255, 0.6);
+      backdrop-filter: blur(15px);
+      padding: 40px 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.15);
+      text-align: center;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    
+    .contact-section h2 {
+      font-family: 'Raleway', sans-serif;
+      color: #212529;
+      margin-bottom: 15px;
+      font-size: 2.5em;
+    }
+    
+    .contact-section p {
+      color: #555;
+      font-size: 1.1em;
+      margin-bottom: 40px;
+    }
+    
+    .contact-item {
+      margin: 25px 0;
+      font-size: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+    
+    .contact-item i {
+      font-size: 24px;
+      color: #007bff;
+      margin-right: 15px;
+      transition: transform 0.3s;
+    }
+    
+    .contact-item:hover i {
+      transform: scale(1.2);
+    }
+
+    .contact-item-text {
+        color: #333;
+        text-decoration: none;
+    }
+
+    .contact-item-text a {
+        color: #0056b3;
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    .contact-item-text a:hover {
+      color: #007bff;
+      text-decoration: underline;
+    }
+
+    /* --- Footer --- */
+    .site-footer {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: rgba(33, 37, 41, 0.8);
+        color: #f1f1f1;
+        margin-top: 50px;
+        border-top-left-radius: 15px;
+        border-top-right-radius: 15px;
+    }
+
+    .social-icons a {
+        color: #f1f1f1;
+        margin: 0 12px;
+        font-size: 24px;
+        transition: color 0.3s, transform 0.3s;
+    }
+
+    .social-icons a:hover {
+        color: #007bff;
+        transform: translateY(-3px);
+    }
+
+    .site-footer p {
+        margin-top: 20px;
+        font-size: 1em;
+    }
+    .site-footer p a {
+        color: #00aaff;
+        text-decoration: none;
+    }
+    .site-footer p a:hover {
+        text-decoration: underline;
+    }
+  </style>
 </head>
 
 <body>
 
-<!-- Sidebar -->
-<nav class="w3-sidebar w3-bar-block w3-animate-left" style="display:none" id="mySidebar">
-  <button onclick="w3_close()" class="menu-toggle"><i class="fa fa-times"></i> Đóng Menu</button>
-  <a href="index.html" class="w3-bar-item w3-button"><font color="#FF0000">Trang Chủ</font></a>
-  <a href="https://sites.google.com/view/phan-tuan-huy" class="w3-bar-item w3-button"><font color="#F9FF00">Giới Thiệu</font></a>
-  <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button"><font color="#E500FF">Thông Tin Liên Hệ</font></a>
-  <a href="https://www.youtube.com/@PhanTuanHuy12" class="w3-bar-item w3-button"><font color="#15FF00">YouTube</font></a>
+<nav class="sidebar" id="mySidebar">
+  <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">&times;</a>
+  <a href="index.html"><i class="fa fa-home"></i>Trang Chủ</a>
+  <a href="Giới thiệu.html"><i class="fa fa-user-circle"></i>Giới Thiệu</a>
+  <a href="Thông tin liên hệ.html" class="active"><i class="fa fa-envelope"></i>Thông Tin Liên Hệ</a>
+  <a href="https://www.youtube.com/@PhanTuanHuy12"><i class="fa fa-youtube-play"></i>YouTube</a>
 
-  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">🌐 Web <i class="fa fa-caret-down"></i></button>
+  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">
+    <i class="fa fa-globe"></i>Web<i class="fa fa-caret-down" style="float: right; margin-top: 5px;"></i>
+  </button>
   <div class="dropdown-container" id="webDropdown">
-    <a href="https://sun.aweray.com/vi/" class="w3-bar-item w3-button"><font color="#1400FF">Aweray</font></a>
-    <a href="#" class="w3-bar-item w3-button"><font color="#1400FF">...</font></a>
-    <a href="#" class="w3-bar-item w3-button"><font color="#1400FF">...</font></a>
+    <a href="https://sun.aweray.com/vi/"><i class="fa fa-sun-o"></i>Aweray</a>
+    <a href="#"><i class="fa fa-link"></i>...</a>
   </div>
 
-  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">📞 Hỗ Trợ <i class="fa fa-caret-down"></i></button>
+  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">
+    <i class="fa fa-support"></i>Hỗ Trợ<i class="fa fa-caret-down" style="float: right; margin-top: 5px;"></i>
+  </button>
   <div class="dropdown-container" id="supportDropdown">
-    <a href="https://www.facebook.com/TuanHuy130" class="w3-bar-item w3-button"><font color="#1400FF">Facebook</font></a>
-    <a href="#" class="w3-bar-item w3-button"><font color="#FF0004">Discord</font></a>
-    <a href="#" class="w3-bar-item w3-button">Đang Cập Nhật ...</a>
+    <a href="https://www.facebook.com/TuanHuy130"><i class="fa fa-facebook-official"></i>Facebook</a>
+    <a href="#"><i class="fa fa-gamepad"></i>Discord</a>
   </div>
 </nav>
 
-<!-- Nút mở sidebar -->
-<div class="w3-bar w3-black">
-  <button class="menu-toggle" onclick="w3_open()">☰ Mở Menu</button>
-</div>
-
-<!-- Nội dung chính -->
 <div class="main-content" id="mainContent">
-  <div class="w3-container w3-content w3-padding-64" style="max-width:800px" id="contact">
-    <h2 class="w3-wide w3-center">Thông Tin Liên Hệ</h2>
-    <p class="w3-opacity w3-center"><i>Có Thắc Mắc Hãy Liên Hệ</i></p>
-    <div class="w3-row w3-padding-32">
-      <div class="w3-col m6 w3-large w3-margin-bottom">
-        <i class="fa fa-map-marker" style="width:30px"></i>Đồng Nai, VN<br>
-        <i class="fa fa-phone" style="width:30px"></i> Phone: 0764390492<br>
-        <i class="fa fa-envelope" style="width:30px"> </i> Email:<a href="https://mail.google.com/mail"> tuanhuy2006.lt@gmail.com</a><br>
+  <div>
+    <button class="menu-toggle" onclick="openNav()">&#9776; Menu</button>
+    
+    <div class="contact-container">
+      <div class="contact-section">
+        <h2 style="font-weight: 700;">📬 Liên Hệ Với Tôi</h2>
+        <p>Nếu bạn có thắc mắc hoặc muốn hợp tác, đừng ngần ngại liên hệ với tôi qua các thông tin dưới đây!</p>
+
+        <div class="contact-item">
+          <i class="fa fa-map-marker"></i>
+          <p class="contact-item-text">Đồng Nai, Việt Nam</p>
+        </div>
+
+        <div class="contact-item">
+          <i class="fa fa-phone"></i>
+          <p class="contact-item-text">0764 390 492</p>
+        </div>
+
+        <div class="contact-item">
+          <i class="fa fa-envelope"></i>
+          <p class="contact-item-text"><a href="mailto:tuanhuy2006.lt@gmail.com">tuanhuy2006.lt@gmail.com</a></p>
+        </div>
       </div>
     </div>
   </div>
 
-  <footer class="w3-container w3-padding-64 w3-center w3-light-grey w3-opacity w3-xlarge">
-    <a href="https://www.facebook.com/TuanHuy130"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-    <p class="w3-medium">FB <a href="https://www.facebook.com/TuanHuy130" target="_blank">Huy</a></p>
+  <footer class="site-footer">
+    <div class="social-icons">
+      <a href="https://www.facebook.com/TuanHuy130" target="_blank"><i class="fa fa-facebook-official"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-linkedin"></i></a>
+    </div>
+    <p>Thiết kế bởi Phan Tuấn Huy</p>
+    <p>Kết nối với tôi qua <a href="https://www.facebook.com/TuanHuy130" target="_blank">Facebook</a>.</p>
   </footer>
 </div>
 
 <script>
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("mainContent").style.marginLeft = "250px";
+// Hàm mở sidebar
+function openNav() {
+  document.getElementById("mySidebar").style.left = "0";
+  document.getElementById("mainContent").style.marginLeft = "260px";
 }
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
+
+// Hàm đóng sidebar
+function closeNav() {
+  document.getElementById("mySidebar").style.left = "-260px";
   document.getElementById("mainContent").style.marginLeft = "0";
 }
+
+// Hàm Bật/Tắt sidebar
+function toggleNav() {
+  var sidebar = document.getElementById("mySidebar");
+  // Nếu sidebar đang mở (vị trí left là 0px) thì đóng lại
+  if (sidebar.style.left === "0px") {
+    closeNav();
+  } 
+  // Ngược lại thì mở ra
+  else {
+    openNav();
+  }
+}
+
+// Hàm quản lý các menu con thả xuống (dropdown)
 function toggleDropdown(id) {
   var dropdown = document.getElementById(id);
   dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
 }
+
+// Thay đổi onclick của nút Menu để sử dụng hàm toggleNav
+document.querySelector('.menu-toggle').setAttribute('onclick', 'toggleNav()');
 </script>
 
 </body>

@@ -1,63 +1,127 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
-  <title>Phan Tuấn Huy</title>
+  <title>Phan Tuấn Huy - Trang Chủ</title>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Raleway:600&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Raleway:wght@600;700;800&display=swap" rel="stylesheet">
   <link rel="shortcut icon" href="noFilter.png" type="image/png" />
   <style>
-    body {
-      font-family: 'Raleway', sans-serif;
-      background-color: #f1f1f1;
+    /* --- General Styling & Body --- */
+    body, html {
+      height: 100%;
       margin: 0;
+      font-family: 'Lato', sans-serif;
+      background-color: #f8f9fa;
+      overflow-x: hidden; /* Ngăn chặn thanh cuộn ngang khi menu đẩy */
     }
 
-    /* Sidebar styles */
-    .w3-sidebar {
-      width: 250px;
-      background: #111;
+    /* --- Sidebar Styling --- */
+    .sidebar {
+      height: 100%;
+      width: 260px;
+      position: fixed;
+      z-index: 10;
+      top: 0;
+      left: -260px; /* Bắt đầu ẩn */
+      background: rgba(33, 37, 41, 0.9);
+      backdrop-filter: blur(10px);
+      overflow-x: hidden;
+      transition: left 0.4s ease-in-out;
+      padding-top: 20px;
+      box-shadow: 2px 0 15px rgba(0,0,0,0.1);
+    }
+
+    .sidebar a, .dropdown-btn {
+      padding: 12px 20px;
+      text-decoration: none;
+      font-size: 17px;
+      color: #f1f1f1;
+      display: block;
+      border: none;
+      background: none;
+      width: 100%;
+      text-align: left;
+      cursor: pointer;
+      outline: none;
+      transition: background-color 0.3s, color 0.3s, padding-left 0.3s;
+    }
+    
+    .sidebar a i, .dropdown-btn i {
+      margin-right: 15px;
+      width: 20px;
+      text-align: center;
+    }
+
+    .sidebar a:hover, .dropdown-btn:hover {
+      background-color: #007bff;
       color: white;
-      box-shadow: 2px 0 5px rgba(0,0,0,0.3);
-      transition: 0.3s;
+      padding-left: 25px;
     }
 
-    .w3-sidebar a,
-    .w3-sidebar button {
-      font-size: 16px;
-      transition: 0.2s;
+    .close-btn {
+      position: absolute;
+      top: 0;
+      right: 15px;
+      font-size: 36px;
+      margin-left: 50px;
+      color: #a1a1a1;
+      transition: color 0.3s, transform 0.3s;
     }
 
-    .w3-sidebar a:hover,
-    .w3-sidebar button:hover {
-      background-color: #f44336 !important;
-      color: white !important;
+    .close-btn:hover {
+        color: #f44336;
+        transform: rotate(90deg);
     }
 
+    .dropdown-container {
+      display: none;
+      background-color: rgba(0,0,0,0.2);
+      padding-left: 20px;
+    }
+    
+    .dropdown-container a {
+        font-size: 15px;
+        color: #d1d1d1;
+    }
+    .dropdown-container a:hover {
+        color: white;
+    }
+
+
+    /* --- Main Content & Menu Toggle --- */
     .main-content {
-      transition: margin-left 0.3s;
-      padding: 20px;
+      transition: margin-left 0.4s ease-in-out; /* Thêm lại transition cho margin-left */
       margin-left: 0;
     }
 
+    .menu-toggle-container {
+        position: fixed;
+        top: 15px;
+        left: 15px;
+        z-index: 5;
+        transition: left 0.4s ease-in-out; /* Thêm transition cho nút menu */
+    }
+
     .menu-toggle {
-      background-color: #111;
-      color: #f9ff00;
-      border: none;
-      padding: 12px 20px;
-      font-size: 18px;
+      font-size: 20px;
       cursor: pointer;
-      width: 100%;
-      text-align: left;
+      background-color: rgba(33, 37, 41, 0.8);
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 8px;
+      transition: background-color 0.3s, transform 0.3s;
     }
-
     .menu-toggle:hover {
-      background-color: #333;
+        background-color: #007bff;
+        transform: scale(1.05);
     }
 
-    /* Hero section */
+    /* --- Hero Section --- */
     .hero {
       background: url('h.jpg') no-repeat center center/cover;
       height: 100vh;
@@ -68,59 +132,90 @@
       text-align: center;
       color: white;
     }
-
-    .hero-overlay {
-      background-color: rgba(0,0,0,0.6);
+    
+    .hero::before {
+      content: '';
       position: absolute;
       top: 0; left: 0;
       width: 100%;
       height: 100%;
+      background: linear-gradient(360deg, rgba(0, 21, 41, 0.7) 0%, rgba(0, 21, 41, 0.3) 100%);
     }
 
     .hero-content {
       position: relative;
       z-index: 1;
+      padding: 20px;
+      animation: fadeInDown 1.5s ease-out;
     }
 
     .hero h1 {
-      font-size: 48px;
+      font-family: 'Raleway', sans-serif;
+      font-weight: 800;
+      font-size: 3.5em;
       margin-bottom: 10px;
+      text-shadow: 2px 2px 8px rgba(0,0,0,0.7);
     }
 
     .hero p {
-      font-size: 20px;
+      font-size: 1.3em;
+      font-weight: 400;
+      max-width: 600px;
+      margin: 0 auto;
+      text-shadow: 1px 1px 4px rgba(0,0,0,0.7);
+    }
+    
+    /* --- Footer (Đã cập nhật để giống trang liên hệ) --- */
+    .site-footer {
+        text-align: center;
+        padding: 40px 20px;
+        background-color: rgba(33, 37, 41, 0.8); /* Nền tối */
+        color: #f1f1f1; /* Chữ sáng */
     }
 
-    footer i {
-      margin: 0 10px;
-      transition: 0.3s;
+    .social-icons a {
+        color: #f1f1f1; /* Chữ sáng */
+        margin: 0 12px;
+        font-size: 24px;
+        transition: color 0.3s, transform 0.3s;
     }
 
-    footer i:hover {
-      color: #f44336;
+    .social-icons a:hover {
+        color: #007bff;
+        transform: translateY(-3px);
     }
 
-    /* Dropdown buttons */
-    .dropdown-btn {
-      background: none;
-      border: none;
-      color: #f9ff00;
-      padding: 10px 16px;
-      text-align: left;
-      width: 100%;
-      font-size: 16px;
-      cursor: pointer;
+    .site-footer p {
+        margin-top: 20px;
+        font-size: 1em;
+    }
+    .site-footer p a {
+        color: #00aaff;
+        text-decoration: none;
+    }
+    .site-footer p a:hover {
+        text-decoration: underline;
     }
 
-    .dropdown-container {
-      display: none;
-      background-color: #222;
-      padding-left: 20px;
+    /* --- Animation --- */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
     }
 
-    @media screen and (max-width: 600px) {
+    /* --- Responsive --- */
+    @media screen and (max-width: 768px) {
       .hero h1 {
-        font-size: 32px;
+        font-size: 2.5em;
+      }
+      .hero p {
+        font-size: 1.1em;
       }
     }
   </style>
@@ -128,70 +223,86 @@
 
 <body>
 
-<!-- Sidebar -->
-<nav class="w3-sidebar w3-bar-block w3-animate-left" style="display:none" id="mySidebar">
-  <button onclick="w3_close()" class="menu-toggle"><i class="fa fa-times"></i> Đóng Menu</button>
-  <a href="index.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Trang Chủ</span></a>
-  <a href="https://sites.google.com/view/phan-tuan-huy" class="w3-bar-item w3-button"><span style="color:#f9ff00">Giới Thiệu</span></a>
-  <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Thông Tin Liên Hệ</span></a>
-  <a href="Dữ Liệu.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Dữ Liệu</span></a>
-  <a href="https://www.youtube.com/@PhanTuanHuy12" class="w3-bar-item w3-button"><span style="color:#f9ff00">YouTube</span></a>
-  <a href="tai ve.html" class="w3-bar-item w3-button"><span style="color:#f9ff00">Tải Về</span></a>
+<nav class="sidebar" id="mySidebar">
+  <a href="javascript:void(0)" class="close-btn" onclick="closeNav()">×</a>
+  <a href="index.html"><i class="fa fa-home"></i>Trang Chủ</a>
+  <a href="Giới thiệu.html"><i class="fa fa-user-circle"></i>Giới Thiệu</a>
+  <a href="Thông tin liên hệ.html"><i class="fa fa-envelope"></i>Thông Tin Liên Hệ</a>
+  <a href="Dữ Liệu.html"><i class="fa fa-database"></i>Dữ Liệu</a>
+  <a href="https://www.youtube.com/@PhanTuanHuy12"><i class="fa fa-youtube-play"></i>YouTube</a>
+  <a href="tai ve.html"><i class="fa fa-download"></i>Tải Về</a>
 
-  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">🌐 Web <i class="fa fa-caret-down"></i></button>
+  <button class="dropdown-btn" onclick="toggleDropdown('webDropdown')">
+    <i class="fa fa-globe"></i>Web<i class="fa fa-caret-down" style="float: right; margin-top: 5px;"></i>
+  </button>
   <div class="dropdown-container" id="webDropdown">
-    <a href="https://sun.aweray.com/vi/" class="w3-bar-item w3-button">Aweray</a>
-    
-    <a href="https://www.dropbox.com/s/hf05xblk3um85de/Symlink%20Creator.rar?dl=0" class="w3-bar-item w3-button">Symlink</a>
-    <a href="https://www.thegioididong.com/game-app/tong-hop-cac-lenh-run-thong-dung-trong-windows-10-ban-nen-1282407" class="w3-bar-item w3-button">Windows + R</a>
-    <a href="https://www.google.com/maps?q=10.6977036,106.9301423&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button">Công Ty QFT 1</a>
-    <a href="https://www.google.com/maps?q=10.6988443,106.9317499&z=14&t=m&mapclient=embed" class="w3-bar-item w3-button">Công Ty Kankio</a>
+    <a href="https://sun.aweray.com/vi/"><i class="fa fa-sun-o"></i>Aweray</a>
+    <a href="https://www.dropbox.com/s/hf05xblk3um85de/Symlink%20Creator.rar?dl=0"><i class="fa fa-link"></i>Symlink</a>
+    <a href="https://www.thegioididong.com/game-app/tong-hop-cac-lenh-run-thong-dung-trong-windows-10-ban-nen-1282407"><i class="fa fa-terminal"></i>Lệnh Run</a>
+    <a href="https://www.google.com/maps?q=10.6977036,106.9301423&z=14&t=m&mapclient=embed"><i class="fa fa-map-marker"></i>Công Ty QFT 1</a>
+    <a href="https://www.google.com/maps?q=10.6988443,106.9317499&z=14&t=m&mapclient=embed"><i class="fa fa-map-marker"></i>Công Ty Kankio</a>
   </div>
 
-  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">📞 Hỗ Trợ <i class="fa fa-caret-down"></i></button>
+  <button class="dropdown-btn" onclick="toggleDropdown('supportDropdown')">
+    <i class="fa fa-support"></i>Hỗ Trợ<i class="fa fa-caret-down" style="float: right; margin-top: 5px;"></i>
+  </button>
   <div class="dropdown-container" id="supportDropdown">
-    <a href="https://www.facebook.com/TuanHuy130" class="w3-bar-item w3-button"><span style="color:#1400FF">Facebook</span></a>
-    <a href="#" class="w3-bar-item w3-button">Discord</a>
-    <a href="#" class="w3-bar-item w3-button">Đang Cập Nhật ...</a>
+    <a href="https://www.facebook.com/TuanHuy130"><i class="fa fa-facebook-official"></i>Facebook</a>
+    <a href="#"><i class="fa fa-gamepad"></i>Discord</a>
   </div>
 </nav>
 
-<!-- Nút mở sidebar -->
-<div class="w3-bar w3-black">
-  <button class="menu-toggle" onclick="w3_open()">☰ Mở Menu</button>
+<div class="menu-toggle-container" id="menu-toggle-btn">
+    <button class="menu-toggle" onclick="toggleNav()">☰ Menu</button>
 </div>
 
-<!-- Nội dung chính -->
+
 <div class="main-content" id="mainContent">
   <header class="hero">
-    <div class="hero-overlay"></div>
     <div class="hero-content">
       <h1>Chào mừng đến với Website của Phan Tuấn Huy</h1>
-      <p>Khám phá các liên kết, dự án và hỗ trợ nhanh chóng tại đây</p>
+      <p>Khám phá các liên kết, dự án và thông tin hỗ trợ nhanh chóng tại đây</p>
     </div>
   </header>
 
-  <footer class="w3-container w3-padding-64 w3-center w3-light-grey w3-opacity w3-xlarge">
-    <a href="https://www.facebook.com/TuanHuy130" target="_blank"><i class="fa fa-facebook-official w3-hover-opacity"></i></a>
-    <i class="fa fa-instagram w3-hover-opacity"></i>
-    <i class="fa fa-snapchat w3-hover-opacity"></i>
-    <i class="fa fa-pinterest-p w3-hover-opacity"></i>
-    <i class="fa fa-twitter w3-hover-opacity"></i>
-    <i class="fa fa-linkedin w3-hover-opacity"></i>
-    <p class="w3-medium">FB: <a href="https://www.facebook.com/TuanHuy130" target="_blank">Huy</a></p>
+  <footer class="site-footer">
+    <div class="social-icons">
+      <a href="https://www.facebook.com/TuanHuy130" target="_blank"><i class="fa fa-facebook-official"></i></a>
+      <a href="#"><i class="fa fa-instagram"></i></a>
+      <a href="#"><i class="fa fa-twitter"></i></a>
+      <a href="#"><i class="fa fa-linkedin"></i></a>
+    </div>
+    <p>Thiết kế bởi Phan Tuấn Huy</p>
+    <p>Kết nối với tôi qua <a href="https://www.facebook.com/TuanHuy130" target="_blank">Facebook</a>.</p>
   </footer>
 </div>
 
-<!-- JavaScript -->
 <script>
-function w3_open() {
-  document.getElementById("mySidebar").style.display = "block";
-  document.getElementById("mainContent").style.marginLeft = "250px";
+// Hàm mở sidebar
+function openNav() {
+  document.getElementById("mySidebar").style.left = "0";
+  document.getElementById("mainContent").style.marginLeft = "260px";
+  document.getElementById("menu-toggle-btn").style.left = "275px"; /* Đẩy nút menu theo */
 }
-function w3_close() {
-  document.getElementById("mySidebar").style.display = "none";
+
+// Hàm đóng sidebar
+function closeNav() {
+  document.getElementById("mySidebar").style.left = "-260px";
   document.getElementById("mainContent").style.marginLeft = "0";
+  document.getElementById("menu-toggle-btn").style.left = "15px"; /* Trả nút menu về vị trí cũ */
 }
+
+// Hàm Bật/Tắt sidebar
+function toggleNav() {
+  var sidebar = document.getElementById("mySidebar");
+  if (sidebar.style.left === "0px") {
+    closeNav();
+  } else {
+    openNav();
+  }
+}
+
+// Hàm quản lý các menu con thả xuống (dropdown)
 function toggleDropdown(id) {
   var dropdown = document.getElementById(id);
   dropdown.style.display = (dropdown.style.display === "block") ? "none" : "block";
