@@ -5,75 +5,270 @@
   <title>Tải về - Phan Tuấn Huy</title>
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://www.w3schools.com/w3css/4/w3.css">
-  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto|Audiowide|Poppins">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Open+Sans:400,600&display=swap">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <style>
     body {
-      font-family: 'Poppins', sans-serif;
-      background: linear-gradient(135deg, #1d1d1d, #3d3d3d);
-      color: white;
-      padding-top: 60px; /* Dành chỗ cho navbar */
+      font-family: 'Open Sans', sans-serif;
+      background: linear-gradient(135deg, #1a1a2e, #16213e);
+      color: #e0e0e0;
+      padding-top: 60px; /* Space for fixed navbar */
       padding-bottom: 50px;
+      line-height: 1.6;
+      overflow-x: hidden; /* Prevent horizontal scroll from animations */
     }
 
     .header {
       text-align: center;
-      padding: 50px;
-      background: url('https://www.transparenttextures.com/patterns/stardust.png'), linear-gradient(to right, #ff416c, #ff4b2b);
-      animation: pulse 6s infinite alternate;
+      padding: 80px 20px;
+      background: linear-gradient(to right, #0f3460, #16213e);
+      color: #e94560;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+      animation: fadeIn 1.5s ease-out;
     }
 
-    @keyframes pulse {
-      0% { background-position: 0% 50%; }
-      100% { background-position: 100% 50%; }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-20px); }
+      to { opacity: 1; transform: translateY(0); }
     }
 
     .header h1 {
-      font-family: 'Audiowide', cursive;
-      font-size: 48px;
+      font-family: 'Montserrat', sans-serif;
+      font-size: 52px;
+      margin-bottom: 15px;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.5);
+    }
+
+    .header p {
+      font-size: 18px;
+      color: #c0c0c0;
+    }
+
+    .main-content {
+      max-width: 95%; /* Adjusted: Increased max-width to make it almost full width */
+      margin: 40px auto;
+      padding: 0 20px;
+      display: flex;
+      justify-content: space-between;
+      gap: 30px; /* Gap between main sections */
+      flex-wrap: wrap; /* Allow wrapping on smaller screens */
+    }
+
+    .left-sidebar, .right-sidebar {
+      background-color: #0f3460;
+      padding: 25px;
+      border-radius: 12px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      flex: 0 0 250px; /* Width for sidebars */
+      opacity: 0;
+      animation: fadeIn 1s forwards ease-out;
+    }
+
+    .left-sidebar {
+      animation-delay: 0.5s; /* Delay for left sidebar */
+      transform: translateX(-50px);
+      animation-name: slideInLeft;
+    }
+
+    .right-sidebar {
+      animation-delay: 0.7s; /* Delay for right sidebar */
+      transform: translateX(50px);
+      animation-name: slideInRight;
+    }
+
+    @keyframes slideInLeft {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    @keyframes slideInRight {
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    .left-sidebar h3, .right-sidebar h3 {
+      color: #e94560;
+      margin-top: 0;
+      margin-bottom: 15px;
+      font-size: 22px;
+      border-bottom: 2px solid #1a1a2e;
+      padding-bottom: 10px;
+    }
+
+    .left-sidebar ul, .right-sidebar ul {
+      list-style: none;
+      padding: 0;
+    }
+
+    .left-sidebar ul li, .right-sidebar ul li {
       margin-bottom: 10px;
     }
 
-    .download-section {
-      max-width: 800px;
-      margin: 0 auto;
-      padding: 30px;
+    .left-sidebar ul li a, .right-sidebar ul li a {
+      color: #b0b0b0;
+      text-decoration: none;
+      transition: color 0.3s ease;
+      display: block;
+    }
+
+    .left-sidebar ul li a:hover, .right-sidebar ul li a:hover {
+      color: #ffac41;
+    }
+
+    .social-icons {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .social-icons a {
+      color: #b0b0b0;
+      font-size: 24px;
+      margin: 0 10px;
+      transition: color 0.3s ease;
+    }
+
+    .social-icons a:hover {
+      color: #ffac41;
+    }
+
+    .main-download-area {
+      flex: 1; /* Allow this section to grow and take available space */
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 20px; /* Gap between download items */
+      min-width: 800px; /* Minimum width for the main download area */
     }
 
     .download-item {
-      background-color: #2a2a2a;
-      border-left: 6px solid #ff4b2b;
-      padding: 20px;
-      margin-bottom: 15px;
-      transition: 0.3s;
-      border-radius: 10px;
+      background-color: #0f3460;
+      border-left: 6px solid #e94560;
+      padding: 25px;
+      margin-bottom: 0; /* Removed margin-bottom because of gap */
+      transition: all 0.4s cubic-bezier(0.25, 0.8, 0.25, 1);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      transform: translateX(-50px);
+      animation: slideIn 0.8s forwards ease-out;
+      width: calc(33.33% - 14px); /* Three columns, considering gap */
+      box-sizing: border-box;
+      flex-grow: 1; /* Allow items to grow and fill available space */
+    }
+
+    /* Adjust for smaller screens - making sidebars collapse */
+    @media (max-width: 1024px) {
+      .main-content {
+        flex-direction: column; /* Stack columns on smaller screens */
+        align-items: center; /* Center items when stacked */
+      }
+      .left-sidebar, .right-sidebar {
+        flex: 0 0 auto; /* Allow sidebars to take natural width */
+        width: 100%; /* Full width on smaller screens */
+        margin-bottom: 30px; /* Space between stacked sections */
+        transform: translateX(0) !important; /* Reset animation transform */
+        animation-name: fadeIn !important; /* Change animation for smaller screens */
+        animation-delay: 0s !important;
+      }
+      .main-download-area {
+        min-width: unset; /* Remove min-width restriction */
+        width: 100%; /* Full width for download items section */
+      }
+      .download-item {
+        width: calc(50% - 10px); /* Two columns for medium screens */
+      }
+    }
+
+    /* For very small screens, revert to single column for download items */
+    @media (max-width: 768px) {
+      .download-item {
+        width: 100%; /* Single column on very small screens */
+      }
+    }
+
+    /* Staggered animation for download items - extended for many items */
+    .download-item:nth-child(1) { animation-delay: 0.1s; }
+    .download-item:nth-child(2) { animation-delay: 0.15s; }
+    .download-item:nth-child(3) { animation-delay: 0.20s; }
+    .download-item:nth-child(4) { animation-delay: 0.25s; }
+    .download-item:nth-child(5) { animation-delay: 0.30s; }
+    .download-item:nth-child(6) { animation-delay: 0.35s; }
+    .download-item:nth-child(7) { animation-delay: 0.40s; }
+    .download-item:nth-child(8) { animation-delay: 0.45s; }
+    .download-item:nth-child(9) { animation-delay: 0.50s; }
+    .download-item:nth-child(10) { animation-delay: 0.55s; }
+    .download-item:nth-child(11) { animation-delay: 0.60s; }
+    .download-item:nth-child(12) { animation-delay: 0.65s; }
+    .download-item:nth-child(13) { animation-delay: 0.70s; }
+    .download-item:nth-child(14) { animation-delay: 0.75s; }
+    .download-item:nth-child(15) { animation-delay: 0.80s; }
+    .download-item:nth-child(16) { animation-delay: 0.85s; }
+    .download-item:nth-child(17) { animation-delay: 0.90s; }
+    .download-item:nth-child(18) { animation-delay: 0.95s; }
+    .download-item:nth-child(19) { animation-delay: 1.00s; }
+    .download-item:nth-child(20) { animation-delay: 1.05s; }
+    .download-item:nth-child(21) { animation-delay: 1.10s; }
+    .download-item:nth-child(22) { animation-delay: 1.15s; }
+    .download-item:nth-child(23) { animation-delay: 1.20s; }
+    .download-item:nth-child(24) { animation-delay: 1.25s; }
+    .download-item:nth-child(25) { animation-delay: 1.30s; }
+    .download-item:nth-child(26) { animation-delay: 1.35s; }
+    .download-item:nth-child(27) { animation-delay: 1.40s; }
+    .download-item:nth-child(28) { animation-delay: 1.45s; }
+    .download-item:nth-child(29) { animation-delay: 1.50s; }
+    .download-item:nth-child(30) { animation-delay: 1.55s; }
+    .download-item:nth-child(31) { animation-delay: 1.60s; }
+    .download-item:nth-child(32) { animation-delay: 1.65s; }
+    .download-item:nth-child(33) { animation-delay: 1.70s; }
+    .download-item:nth-child(34) { animation-delay: 1.75s; }
+    .download-item:nth-child(35) { animation-delay: 1.80s; }
+
+
+    @keyframes slideIn {
+      to { opacity: 1; transform: translateX(0); }
     }
 
     .download-item:hover {
-      transform: scale(1.03);
-      background-color: #3a3a3a;
+      transform: translateY(-8px) scale(1.02);
+      background-color: #1a1a2e;
+      border-left-color: #ff6a80;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
     }
 
     .download-item i {
-      margin-right: 15px;
-      color: #ffcc00;
+      margin-right: 20px;
+      color: #ffac41;
+      font-size: 32px;
+      min-width: 40px; /* Ensure icon has consistent width */
+      text-align: center;
     }
 
     a.download-link {
       text-decoration: none;
-      color: #ffffff;
-      display: block;
+      color: #e0e0e0;
+      display: flex; /* Use flex to align icon and text */
+      align-items: center;
+      flex-grow: 1;
+      font-size: 18px;
+      font-weight: 600;
+      transition: color 0.3s ease;
     }
 
     a.download-link:hover {
-      color: #ffcc00;
+      color: #ffac41;
+    }
+
+    .download-link span {
+      flex-grow: 1;
     }
 
     .footer {
       text-align: center;
-      margin-top: 40px;
-      font-size: 14px;
-      opacity: 0.6;
+      margin-top: 50px;
+      font-size: 15px;
+      color: #a0a0a0;
+      padding: 20px;
+      border-top: 1px solid #0f3460;
     }
 
     /* Navbar custom */
@@ -82,58 +277,225 @@
       top: 0;
       width: 100%;
       z-index: 10;
+      background-color: #0d1a2d; /* Darker navy for navbar */
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    .w3-bar .w3-bar-item {
+      padding: 18px 20px;
+      transition: background-color 0.3s, color 0.3s;
     }
 
     .w3-bar .w3-bar-item:hover {
-      background-color: #ff4b2b !important;
+      background-color: #e94560 !important;
       color: #fff !important;
     }
   </style>
 </head>
 <body>
 
-  <!-- Navbar -->
-  <div class="w3-bar w3-black w3-card navbar">
+  <div class="w3-bar w3-card navbar">
     <a href="index.html" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-home"></i> Trang chủ</a>
     <a href="#downloads" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-download"></i> Tải về</a>
     <a href="Thông tin liên hệ.html" class="w3-bar-item w3-button w3-hover-red"><i class="fa fa-envelope"></i> Liên hệ</a>
   </div>
 
   <div class="header" id="downloads">
-    <h1><i class="fas fa-download"></i> Tải Về Tài Liệu</h1>
-    <p>Danh sách các tệp có thể tải về từ Google Drive</p>
+    <h1><i class="fas fa-download"></i> Thư Viện Tài Liệu</h1>
+    <p>Khám phá và tải xuống các tài liệu quan trọng từ Google Drive của tôi. Mọi thứ bạn cần, ngay trong tầm tay.</p>
   </div>
 
-  <div class="download-section">
-
-    <div class="download-item">
-      <a class="download-link" href="https://drive.google.com/file/d/123456789/view?usp=sharing" target="_blank">
-        <i class="fas fa-file-word"></i> 
-      </a>
+  <div class="main-content">
+    <div class="left-sidebar">
+      <h3><i class="fas fa-info-circle"></i> Giới Thiệu</h3>
+      <p>Chào mừng bạn đến với kho tài liệu cá nhân của Phan Tuấn Huy. Nơi đây tôi chia sẻ các tài liệu, dự án, và công cụ hữu ích.</p>
+      <h4>Liên kết nhanh:</h4>
+      <ul>
+        <li><a href="#"><i class="fas fa-lightbulb"></i> Ý tưởng mới</a></li>
+        <li><a href="#"><i class="fas fa-folder"></i> Danh mục dự án</a></li>
+        <li><a href="#"><i class="fas fa-question-circle"></i> Câu hỏi thường gặp</a></li>
+      </ul>
+      <div class="social-icons">
+        <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+        <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+        <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+        <a href="#" aria-label="GitHub"><i class="fab fa-github"></i></a>
+      </div>
     </div>
 
-    <div class="download-item">
-      <a class="download-link" href="https://drive.google.com/file/d/abcde54321/view?usp=sharing" target="_blank">
-        <i class="fas fa-file-pdf"></i> 
-      </a>
+    <div class="main-download-area">
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/123456789/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-word"></i> <span>Tài liệu báo cáo dự án (Word Document)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/abcde54321/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-pdf"></i> <span>Hướng dẫn sử dụng sản phẩm (PDF)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/987654321/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-archive"></i> <span>Tệp nén các tài nguyên thiết kế (.zip)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/EXAMPLE123/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-video"></i> <span>Video giới thiệu sản phẩm (.mp4)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ANOTHER_ID/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-excel"></i> <span>Bảng tính phân tích dữ liệu (Excel)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/YET_ANOTHER_ID/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-powerpoint"></i> <span>Bài thuyết trình dự án (PowerPoint)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_7890/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-image"></i> <span>Bộ sưu tập hình ảnh chất lượng cao (JPG)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_1011/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-audio"></i> <span>Tệp âm thanh nền cho dự án (.mp3)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_1213/view?usp=sharing" target="_blank">
+          <i class="fas fa-code"></i> <span>Mã nguồn ví dụ (Code Snippet)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_1415/view?usp=sharing" target="_blank">
+          <i class="fas fa-book-open"></i> <span>Sách điện tử hướng dẫn chi tiết (eBook)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_1617/view?usp=sharing" target="_blank">
+          <i class="fas fa-file-alt"></i> <span>Tài liệu thông số kỹ thuật (Text File)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_1819/view?usp=sharing" target="_blank">
+          <i class="fas fa-database"></i> <span>Cơ sở dữ liệu mẫu (SQL)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_2021/view?usp=sharing" target="_blank">
+          <i class="fas fa-cogs"></i> <span>Công cụ cài đặt phần mềm (.exe)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_2223/view?usp=sharing" target="_blank">
+          <i class="fas fa-chart-line"></i> <span>Biểu đồ báo cáo thống kê (Chart)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_2425/view?usp=sharing" target="_blank">
+          <i class="fas fa-server"></i> <span>Tập tin cấu hình máy chủ (.conf)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_2627/view?usp=sharing" target="_blank">
+          <i class="fas fa-flask"></i> <span>Kết quả nghiên cứu khoa học (Lab Report)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_2829/view?usp=sharing" target="_blank">
+          <i class="fas fa-palette"></i> <span>Hướng dẫn sử dụng màu sắc (Color Guide)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_3031/view?usp=sharing" target="_blank">
+          <i class="fas fa-gamepad"></i> <span>Tệp trò chơi giải trí (Game File)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_3233/view?usp=sharing" target="_blank">
+          <i class="fas fa-terminal"></i> <span>Tập lệnh tự động hóa (Script)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_3435/view?usp=sharing" target="_blank">
+          <i class="fas fa-microphone"></i> <span>Ghi âm bài giảng (Audio Lecture)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_3637/view?usp=sharing" target="_blank">
+          <i class="fas fa-camera"></i> <span>Tài liệu hướng dẫn chụp ảnh (Photography Guide)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_3839/view?usp=sharing" target="_blank">
+          <i class="fas fa-robot"></i> <span>Tệp mô phỏng robot (Robot Simulation)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_4041/view?usp=sharing" target="_blank">
+          <i class="fas fa-globe"></i> <span>Bản đồ tương tác (Interactive Map)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_4243/view?usp=sharing" target="_blank">
+          <i class="fas fa-brush"></i> <span>Bộ công cụ đồ họa (Graphic Kit)</span>
+        </a>
+      </div>
+
+      <div class="download-item">
+        <a class="download-link" href="https://drive.google.com/file/d/ID_4445/view?usp=sharing" target="_blank">
+          <i class="fas fa-network-wired"></i> <span>Sơ đồ mạng (Network Diagram)</span>
+        </a>
+      </div>
+      </div> <div class="right-sidebar">
+      <h3><i class="fas fa-tags"></i> Các Thẻ Phổ Biến</h3>
+      <div class="tags-cloud">
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Báo cáo</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Hướng dẫn</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Thiết kế</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Video</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Dữ liệu</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Thuyết trình</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Code</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Sách</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Công cụ</a>
+        <a href="#" class="w3-tag w3-round w3-light-grey w3-margin-bottom">Thống kê</a>
+      </div>
+      <h3 style="margin-top: 30px;"><i class="fas fa-chart-bar"></i> Thống Kê</h3>
+      <ul>
+        <li>Tổng số lượt tải: <span>12,345</span></li>
+        <li>Tài liệu hot nhất: <span>Hướng dẫn sử dụng SP</span></li>
+        <li>Cập nhật lần cuối: <span>15/06/2025</span></li>
+      </ul>
     </div>
-
-    <div class="download-item">
-      <a class="download-link" href="https://drive.google.com/file/d/987654321/view?usp=sharing" target="_blank">
-        <i class="fas fa-file-archive"></i> 
-      </a>
-    </div>
-
-    <div class="download-item">
-      <a class="download-link" href="https://drive.google.com/file/d/EXAMPLE123/view?usp=sharing" target="_blank">
-        <i class="fas fa-file-video"></i> 
-      </a>
-    </div>
-
-  </div>
-
-  <div class="footer" id="contact">
-    © 2025 Phan Tuấn Huy - Trang tải về được thiết kế đẹp và sinh động
+  </div> <div class="footer" id="contact">
+    © 2025 Phan Tuấn Huy - Website được thiết kế với sự tỉ mỉ và tâm huyết.
   </div>
 
 </body>
