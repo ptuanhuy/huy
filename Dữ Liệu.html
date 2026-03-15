@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dữ Liệu — Phan Tuấn Huy</title>
+  <link rel="shortcut icon" href="haha.png" type="image/png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Raleway:wght@700;800&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+
+  <style>
+   
+    :root {
+      --bg: #0b1220; --bg-soft: #0f172a; --panel: rgba(255,255,255,.06); --panel-strong: rgba(255,255,255,.12);
+      --text: #e5e7eb; --muted: #a5b4fc; --primary: #4f46e5; --primary-2: #06b6d4; --accent: #ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius-xl: 18px; --radius-2xl: 26px; --blur: blur(10px);
+    }
+    [data-theme="light"] {
+      --bg: #f7f7fb; --bg-soft: #fff; --panel: rgba(0,0,0,.04); --panel-strong: rgba(0,0,0,.08);
+      --text: #0f172a; --muted: #475569; --primary: #2563eb; --primary-2: #0ea5e9; --accent: #dc2626;
+      --shadow: 0 10px 25px rgba(2,6,23,.08);
+    }
+    
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(79,70,229,.35), transparent 50%),
+                  radial-gradient(1000px 500px at 90% 110%, rgba(14,165,233,.35), transparent 45%),
+                  var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+      overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; width: 280px; height: 100vh;
+      background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(15,23,42,.6));
+      backdrop-filter: var(--blur); border-right: 1px solid var(--panel-strong);
+      box-shadow: var(--shadow); transform: translateX(-100%); transition: transform .35s ease;
+      z-index: 40; padding: 18px 14px 20px; overflow-y: auto;
+    }
+    [data-theme="light"] .sidebar { background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.6)); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px; margin-bottom: 8px; }
+    .brand img { width: 32px; height: 32px; border-radius: 12px; }
+    .brand strong { font-weight: 800; letter-spacing: .2px; }
+
+    .nav-group { margin: 14px 6px; }
+    .nav-title { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; opacity: .7; margin: 10px 10px; }
+
+    .sidebar a, .dropdown-btn {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px;
+      border-radius: 12px; color: var(--text); text-decoration: none; font-size: 15.5px;
+      border: 1px solid transparent; background: transparent; cursor: pointer; outline: none; transition: .25s ease;
+    }
+    .sidebar a i, .dropdown-btn i { width: 20px; text-align: center; }
+    .sidebar a:hover, .dropdown-btn:hover { background: var(--panel); border-color: var(--panel-strong); }
+
+    .dropdown { margin-top: 6px; margin-bottom: 8px; }
+    .dropdown-btn .caret { margin-left: auto; transition: transform .25s ease; }
+    .dropdown-btn.active .caret { transform: rotate(180deg); }
+    .dropdown-menu { display: none; padding-left: 6px; }
+    .dropdown-menu a { font-size: 14.5px; opacity: .9; }
+
+    .close-btn { position: absolute; right: 14px; top: 10px; font-size: 28px; border: 0; background: transparent; color: #9aa4b2; cursor: pointer; transition: .2s; line-height: 1; }
+    .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
+
+    .overlay { position: fixed; inset: 0; background: rgba(2,6,23,.45); opacity: 0; visibility: hidden; transition: .35s; z-index: 30; }
+    .overlay.show { opacity: 1; visibility: visible; }
+
+    .topbar { position: fixed; left: 16px; top: 16px; z-index: 35; display: flex; gap: 8px; align-items: center; }
+    .btn { border: 1px solid var(--panel-strong); background: rgba(255,255,255,.06); backdrop-filter: var(--blur); color: var(--text); padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: .2s; font-weight: 600; }
+    [data-theme="light"] .btn { background: rgba(0,0,0,.04); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+    footer {
+      border-top: 1px solid var(--panel-strong); background: linear-gradient(180deg, rgba(255,255,255,.02), rgba(255,255,255,.06));
+      padding: 40px 18px; text-align: center; color: var(--text); margin-top: 60px;
+    }
+    .social { display: flex; gap: 16px; justify-content: center; margin: 0 0 16px; }
+    .social a { width: 44px; height: 44px; display: grid; place-items: center; border: 1px solid var(--panel-strong); border-radius: 14px; color: var(--text); text-decoration: none; transition: .2s ease; font-size: 1.2rem; }
+    .social a:hover { background: var(--primary); color: #fff; border-color: var(--primary); transform: translateY(-3px); }
+
+    .reveal { opacity: 0; transform: translateY(20px); transition: 0.8s ease; }
+    .reveal.visible { opacity: 1; transform: none; }
+    .muted { color: var(--muted); }
+
+    
+    .container { max-width: 1100px; margin: 0 auto; }
+    .page-header { text-align: center; margin-bottom: 50px; padding-top: 100px; position: relative; }
+    .page-header h1 { font-family: 'Raleway', sans-serif; font-size: clamp(2.2rem, 5vw, 3rem); font-weight: 900; margin: 0 0 10px; background: linear-gradient(135deg, var(--primary-2), var(--primary), #ff44ec); -webkit-background-clip: text; -webkit-text-fill-color: transparent; letter-spacing: -1px; }
+    .page-header p { font-size: 1.1rem; color: var(--muted); max-width: 600px; margin: 0 auto; opacity: 0.9; }
+    .page-header::after { content: ''; display: block; width: 60px; height: 4px; background: var(--primary); margin: 25px auto 0; border-radius: 2px; }
+
+    .data-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(340px, 1fr)); gap: 25px; padding: 0 18px 80px; }
+    
+    .data-category-card { background: linear-gradient(180deg, rgba(255,255,255,.06), rgba(255,255,255,.02)); border: 1px solid var(--panel-strong); border-radius: var(--radius-2xl); padding: 30px; transition: all 0.3s ease; position: relative; overflow: hidden; display: flex; flex-direction: column; box-shadow: var(--shadow); }
+    [data-theme="light"] .data-category-card { background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6)); }
+    .data-category-card:hover { border-color: var(--primary); transform: translateY(-5px); }
+    .data-category-card::before { content: ''; position: absolute; top: -50px; right: -50px; width: 100px; height: 100px; background: var(--primary); opacity: 0.1; filter: blur(30px); border-radius: 50%; }
+
+    .category-header { display: flex; align-items: center; gap: 15px; margin-bottom: 25px; padding-bottom: 15px; border-bottom: 1px solid var(--panel); }
+    .category-icon { font-size: 1.8rem; color: var(--primary-2); background: var(--panel); width: 55px; height: 55px; display: grid; place-items: center; border-radius: 14px; border: 1px solid var(--panel-strong); }
+    .category-header h2 { font-family: 'Raleway', sans-serif; font-size: 1.5rem; margin: 0; color: var(--text); font-weight: 800; }
+
+    .resource-list { list-style: none; padding: 0; margin: 0; flex-grow: 1; }
+    .resource-item { margin-bottom: 12px; }
+    .resource-link { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: rgba(255,255,255,0.03); border: 1px solid var(--panel-strong); border-radius: 12px; color: var(--text); text-decoration: none; transition: 0.2s ease; position: relative; z-index: 2; }
+    [data-theme="light"] .resource-link { background: rgba(0,0,0,0.02); }
+    .resource-link:hover { background: var(--primary); border-color: var(--primary); color: #fff; transform: translateX(3px); }
+    
+    .link-info { display: flex; flex-direction: column; gap: 2px; }
+    .link-title { font-weight: 600; font-size: 1rem; }
+    .link-desc { font-size: 0.85rem; opacity: 0.8; }
+    
+    .link-arrow { font-size: 0.9rem; opacity: 0.5; transition: 0.2s; }
+    .resource-link:hover .link-arrow { opacity: 1; transform: translateX(2px); }
+
+    .resource-meta { display: flex; gap: 6px; margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--panel); font-size: 0.8rem; color: var(--muted); }
+    .status-tag { background: var(--panel); padding: 4px 10px; border-radius: 20px; border: 1px solid var(--panel-strong); font-weight: 500; }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar" aria-label="Thanh điều hướng bên">
+    <button class="close-btn" aria-label="Đóng menu" onclick="toggleSidebar(false)">×</button>
+      <div class="brand" style="background: linear-gradient(90deg, rgba(255,0,0,0.15), transparent); padding: 10px 14px; border-radius: 12px; border-left: 3px solid #ff0000; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; transition: 0.3s;">
+  <img src="sayuuuu.png" alt="Logo" onerror="this.src='https://via.placeholder.com/32?text=H'" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #ff0000; padding: 2px; background: rgba(255,255,255,0.1); box-shadow: 0 0 10px rgba(255,0,0,0.4);">
+  <strong style="color: #ffffff; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase; text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);">Phan Tuấn Huy</strong>
+</div>
+
+    <div class="nav-group">
+      	
+      <a href="index.html"><i class="fa fa-home"></i> Trang chủ</a>
+      <a href="Giới thiệu.html"><i class="fa fa-user"></i> Giới thiệu</a>
+      <a href="Thông tin liên hệ.html"><i class="fa fa-envelope"></i> Thông tin liên hệ</a>
+		<a href="Dữ Liệu.html"><i class="fa fa-envelope"></i>Dữ Liệu</a>
+      <a href="tai_ve.html"><i class="fa fa-download"></i> Tải về</a>
+		<a href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener" 
+   style="color: #FF0000; border: 2px solid #FF0000; background: rgba(255, 0, 0, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);">
+   <i class="fa fa-youtube-play" style="color: #FF0000;"></i> Kênh YouTube
+</a>
+      <a href="Cày thuê.html" style="color: #00e5ff; border: 2px solid #00e5ff; background: rgba(0, 229, 255, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);">
+  <i class="fa fa-gamepad" style="color: #00e5ff;"></i> Dịch vụ Cày Thuê
+</a>
+
+<a href="Minecraft.html" style="color: #2ecc71; border: 2px solid #2ecc71; background: rgba(46, 204, 113, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);">
+  <i class="fa fa-cubes" style="color: #2ecc71;"></i> Server Minecraft
+</a>
+    </div>
+
+<div class="nav-group dropdown">
+  <button class="dropdown-btn" onclick="toggleDropdown('supportMenu', this)" style="color: #06b6d4; border: 2px solid #06b6d4; background: rgba(6, 182, 212, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);">
+    <i class="fa fa-life-ring" style="color: #06b6d4;"></i> Hỗ trợ <i class="fa fa-caret-down caret"></i>
+  </button>
+  
+  <div class="dropdown-menu" id="supportMenu" style="margin-top: 10px;">
+    <a href="https://www.facebook.com/TuanHuy130" target="_blank" rel="noopener" style="color: #1877f2; border: 2px solid #1877f2; background: rgba(24, 119, 242, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(24, 119, 242, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-facebook-official" style="color: #1877f2;"></i> Facebook
+    </a>
+    
+    <a href="#" style="color: #5865F2; border: 2px solid #5865F2; background: rgba(88, 101, 242, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(88, 101, 242, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-gamepad" style="color: #5865F2;"></i> Discord
+    </a>
+    
+    <a href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener" style="color: #ff0000; border: 2px solid #ff0000; background: rgba(255, 0, 0, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-youtube-play" style="color: #ff0000;"></i> YouTube
+    </a>
+  </div>
+</div>
+  </aside>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar(false)"></div>
+
+  <div class="topbar">
+    <button class="btn" onclick="toggleSidebar(true)"><i class="fa fa-bars"></i> Menu</button>
+    <button class="btn" id="themeToggle" aria-label="Đổi giao diện"><i class="fa fa-moon-o"></i></button>
+  </div>
+
+<main class="container">
+    <header class="page-header reveal visible">
+      <h1>Dữ Liệu    </h1>
+  </header>
+
+  <div class="data-grid reveal visible">
+
+    <section class="data-category-card">
+      <div class="category-header">
+        <div class="category-icon"><i class="fa fa-wrench"></i></div>
+        <h2>Kỹ Thuật Máy Tính</h2>
+      </div>
+      <ul class="resource-list">
+        <li class="resource-item">
+          <a href="https://quantrimang.com/cong-nghe/loi-bsod-memory-management-175883" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">Tra cứu mã lỗi Windows</span>
+              <span class="link-desc">Cơ sở dữ liệu mã lỗi BSOD và Update.</span>
+            </div>
+            <i class="fa fa-angle-right link-arrow"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="resource-meta">
+        <span class="status-tag">1 Tài liệu</span>
+      </div>
+    </section>
+
+    <section class="data-category-card">
+      <div class="category-header">
+        <div class="category-icon"><i class="fa fa-book"></i></div>
+        <h2>Học Tập & Phát Triển</h2>
+      </div>
+      <ul class="resource-list">
+        <li class="resource-item">
+          <a href="https://vietnix.vn/it-helpdesk-la-gi/?utm_source=ggads&utm_medium=pmax&utm_campaign={CampaignName}&p=&gad_source=1&gad_campaignid=23234186547&gbraid=0AAAAABwedNIBvb935uGiQnwuhSMqIlpBm&gclid=Cj0KCQjwsdnNBhC4ARIsAA_3hegkTnWApb30-B7JXc6ToHLJkDcdWCgaRQoe_Yq0z3JZ9GOgcpyhpNcaApaZEALw_wcB" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">Lộ trình học IT Support</span>
+              <span class="link-desc">Các kỹ năng cần thiết cho kỹ thuật viên.</span>
+            </div>
+            <i class="fa fa-angle-right link-arrow"></i>
+          </a>
+        </li>
+        <li class="resource-item">
+          <a href="https://talkpal.ai/get-started/vi" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">Tài liệu tiếng Hàn sơ cấp</span>
+              <span class="link-desc" >Giáo trình và từ vựng cơ bản.</span>
+            </div>
+            <i class="fa fa-angle-right link-arrow"></i>
+          </a>
+        </li>
+        <li class="resource-item">
+          <a href="https://download.com.vn/huong-dan-dung-code-org-de-hoc-lap-trinh-voi-minecraft-170332" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">Cấu trúc Skript Minecraft</span>
+              <span class="link-desc">Hướng dẫn code script cho Server.</span>
+            </div>
+            <i class="fa fa-angle-right link-arrow"></i>
+          </a>
+        </li>
+      </ul>
+      <div class="resource-meta">
+        <span class="status-tag">3 Tài liệu</span>
+      </div>
+    </section>
+
+    <section class="data-category-card">
+      <div class="category-header">
+        <div class="category-icon"><i class="fa fa-link"></i></div>
+        <h2>Liên Kết Nhanh</h2>
+      </div>
+      <ul class="resource-list">
+        <li class="resource-item">
+          <a href="https://virustotal.com" target="_blank" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">VirusTotal Online Scan</span>
+              <span class="link-desc">Kiểm tra file và link nghi ngờ.</span>
+            </div>
+            <i class="fa fa-external-link link-arrow"></i>
+          </a>
+        </li>
+        <li class="resource-item">
+          <a href="https://www.canyouseeme.org/" class="resource-link">
+            <div class="link-info">
+              <span class="link-title">Kiểm tra IP </span>
+              <span class="link-desc">Bộ công cụ check port</span>
+            </div>
+            <i class="fa fa-angle-right link-arrow"></i>
+          </a>
+        </li>
+        <li class="resource-item"> </li>
+      </ul>
+      <div class="resource-meta">
+        <span class="status-tag">Web Tool</span>
+      </div>
+    </section>
+
+  </div>
+  </main>
+
+  <footer>
+    <div class="social">
+      <a href="https://www.facebook.com/TuanHuy130" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+      <a href="https://www.instagram.com/phanhoanghuy1510/" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+     
+    </div>
+    <small>© Thiết Kế Bởi <span id="year"></span> <b>Phan Tuấn Huy</b> — IT Support & Technician.</small>
+</footer>
+
+<script>
+    const sidebar = document.getElementById('sidebar');
+    const overlay = document.getElementById('overlay');
+
+    function toggleSidebar(open) {
+      if(open) {
+        sidebar.classList.add('open');
+        overlay.classList.add('show');
+      } else {
+        sidebar.classList.remove('open');
+        overlay.classList.remove('show');
+      }
+    }
+
+    function toggleDropdown(id, btnElement) {
+      const menu = document.getElementById(id);
+      const isOpen = menu.style.display === 'block';
+      
+      document.querySelectorAll('.dropdown-menu').forEach(m => {
+          if(m.id !== id) m.style.display = 'none';
+      });
+      document.querySelectorAll('.dropdown-btn').forEach(b => {
+          if(b !== btnElement) b.classList.remove('active');
+      });
+
+      menu.style.display = isOpen ? 'none' : 'block';
+      if(btnElement) {
+        btnElement.classList.toggle('active', !isOpen);
+        btnElement.setAttribute('aria-expanded', String(!isOpen));
+      }
+    }
+
+    const themeToggleBtn = document.getElementById('themeToggle');
+    const savedTheme = localStorage.getItem('theme') || 'dark';
+    document.documentElement.setAttribute('data-theme', savedTheme);
+    updateThemeIcon(savedTheme);
+
+    themeToggleBtn.addEventListener('click', () => {
+      const now = document.documentElement.getAttribute('data-theme');
+      const next = now === 'light' ? 'dark' : 'light';
+      document.documentElement.setAttribute('data-theme', next);
+      localStorage.setItem('theme', next);
+      updateThemeIcon(next);
+    });
+
+    function updateThemeIcon(theme) {
+      themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fa fa-moon-o"></i>' : '<i class="fa fa-sun-o"></i>';
+    }
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if(e.isIntersecting) {
+          e.target.classList.add('visible');
+          io.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+    window.addEventListener('keydown', (e) => {
+      if(e.key === 'Escape') toggleSidebar(false);
+    });
+  </script>
+</body>
+</html>

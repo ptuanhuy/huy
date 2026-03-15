@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Bảng Giá Cày Thuê Blox Fruits — Phan Tuấn Huy</title>
+  <link rel="shortcut icon" href="haha.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;800&family=Raleway:wght@700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  
+  <style>
+   
+    :root {
+      --bg: #0b1220; --bg-soft: #0f172a; --panel: rgba(255,255,255,.06); --panel-strong: rgba(255,255,255,.12);
+      --text: #e5e7eb; --muted: #a5b4fc; --primary: #4f46e5; --primary-2: #06b6d4; --accent: #ef4444;
+      --shadow: 0 10px 30px rgba(0,0,0,.35); --radius-xl: 18px; --radius-2xl: 26px; --blur: blur(10px);
+      
+     
+      --mythic: #ff2a2a; --legendary: #ff9900; --epic: #d52aff; --rare: #00a4ef;
+    }
+    [data-theme="light"] {
+      --bg: #f7f7fb; --bg-soft: #fff; --panel: rgba(0,0,0,.04); --panel-strong: rgba(0,0,0,.08);
+      --text: #0f172a; --muted: #475569; --primary: #2563eb; --primary-2: #0ea5e9; --accent: #dc2626;
+      --shadow: 0 10px 25px rgba(2,6,23,.08);
+    }
+    
+    * { box-sizing: border-box; }
+    html { min-height: 100vh; scroll-behavior: smooth; }
+    body {
+      margin: 0; min-height: 100vh; display: flex; flex-direction: column;
+      background: radial-gradient(1200px 600px at 10% -10%, rgba(213,42,255,.15), transparent 50%),
+                  radial-gradient(1000px 500px at 90% 110%, rgba(255,42,42,.15), transparent 45%),
+                  var(--bg);
+      color: var(--text); font-family: 'Inter', system-ui, sans-serif; line-height: 1.6; overflow-x: hidden;
+      transition: background 0.3s, color 0.3s;
+      padding-bottom: 80px;
+    }
+
+  
+    .sidebar { position: fixed; inset: 0 auto 0 0; width: 280px; height: 100vh; background: linear-gradient(180deg, rgba(15,23,42,.85), rgba(15,23,42,.6)); backdrop-filter: var(--blur); border-right: 1px solid var(--panel-strong); box-shadow: var(--shadow); transform: translateX(-100%); transition: transform .35s ease; z-index: 40; padding: 18px 14px 20px; overflow-y: auto; }
+    [data-theme="light"] .sidebar { background: linear-gradient(180deg, rgba(255,255,255,.85), rgba(255,255,255,.6)); }
+    .sidebar.open { transform: translateX(0); }
+    .sidebar .brand { display: flex; align-items: center; gap: 10px; padding: 6px 10px; margin-bottom: 8px; }
+    .brand img { width: 32px; height: 32px; border-radius: 12px; }
+    .brand strong { font-weight: 800; letter-spacing: .2px; }
+    .nav-group { margin: 14px 6px; }
+    .nav-title { font-size: 12px; text-transform: uppercase; letter-spacing: .12em; opacity: .7; margin: 10px 10px; }
+    .sidebar a, .dropdown-btn { display: flex; align-items: center; gap: 12px; width: 100%; padding: 12px 14px; border-radius: 12px; color: var(--text); text-decoration: none; font-size: 15.5px; border: 1px solid transparent; background: transparent; cursor: pointer; outline: none; transition: .25s ease; }
+    .sidebar a i, .dropdown-btn i { width: 20px; text-align: center; }
+    .sidebar a:hover, .dropdown-btn:hover { background: var(--panel); border-color: var(--panel-strong); }
+    .dropdown { margin-top: 6px; margin-bottom: 8px; }
+    .dropdown-btn .caret { margin-left: auto; transition: transform .25s ease; }
+    .dropdown-btn.active .caret { transform: rotate(180deg); }
+    .dropdown-menu { display: none; padding-left: 6px; }
+    .dropdown-menu a { font-size: 14.5px; opacity: .9; }
+    .close-btn { position: absolute; right: 14px; top: 10px; font-size: 28px; border: 0; background: transparent; color: #9aa4b2; cursor: pointer; transition: .2s; line-height: 1; }
+    .close-btn:hover { color: var(--accent); transform: rotate(90deg); }
+    .overlay { position: fixed; inset: 0; background: rgba(2,6,23,.45); opacity: 0; visibility: hidden; transition: .35s; z-index: 30; }
+    .overlay.show { opacity: 1; visibility: visible; }
+    
+    
+    .topbar { position: fixed; left: 16px; top: 16px; z-index: 35; display: flex; gap: 8px; align-items: center; }
+    .btn { border: 1px solid var(--panel-strong); background: rgba(255,255,255,.06); backdrop-filter: var(--blur); color: var(--text); padding: 10px 14px; border-radius: 12px; cursor: pointer; transition: .2s; font-weight: 600; }
+    [data-theme="light"] .btn { background: rgba(0,0,0,.04); }
+    .btn:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+
+    .blox-wrap { padding: 90px 18px 40px; max-width: 850px; margin: 0 auto; flex: 1; width: 100%; position: relative; }
+    
+    .hero-banner { text-align: center; margin-bottom: 30px; position: relative; }
+    .hero-banner h1 { font-family: 'Raleway', sans-serif; font-size: 2.2rem; font-weight: 900; margin: 0 0 10px; text-transform: uppercase; background: linear-gradient(90deg, #ff2a2a, #d52aff, #00a4ef); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+    .hero-banner p { font-size: 1rem; opacity: 0.85; margin: 0 auto; }
+    
+    .instruction { display: inline-flex; align-items: center; gap: 8px; background: rgba(6, 182, 212, 0.1); border: 1px solid rgba(6, 182, 212, 0.3); color: var(--primary-2); padding: 8px 16px; border-radius: 99px; font-size: 0.9rem; font-weight: 600; margin-top: 15px; }
+
+    
+    .search-container { position: relative; max-width: 600px; margin: 0 auto 40px; animation: slideDown 0.5s ease; }
+    .search-container .search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); font-size: 1.2rem; transition: 0.3s; }
+    #searchInput { width: 100%; padding: 16px 20px 16px 50px; border-radius: 16px; border: 2px solid var(--panel-strong); background: rgba(0,0,0,0.2); color: var(--text); font-family: 'Inter', sans-serif; font-size: 1.05rem; font-weight: 500; outline: none; transition: 0.3s; box-shadow: inset 0 2px 10px rgba(0,0,0,0.1); backdrop-filter: var(--blur); }
+    #searchInput::placeholder { color: var(--muted); opacity: 0.8; }
+    [data-theme="light"] #searchInput { background: rgba(255,255,255,0.7); border-color: rgba(0,0,0,0.1); }
+    #searchInput:focus { border-color: var(--primary-2); box-shadow: 0 0 0 4px rgba(6,182,212,0.15); background: rgba(0,0,0,0.4); }
+    [data-theme="light"] #searchInput:focus { background: #fff; }
+    #searchInput:focus + .search-icon { color: var(--primary-2); }
+
+    details.price-group { background: linear-gradient(180deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); border: 1px solid var(--panel-strong); border-radius: 16px; margin-bottom: 20px; box-shadow: var(--shadow); backdrop-filter: var(--blur); transition: 0.3s ease; overflow: hidden; }
+    [data-theme="light"] details.price-group { background: linear-gradient(180deg, rgba(255,255,255,.9), rgba(255,255,255,.6)); }
+    details.price-group[open] { box-shadow: 0 15px 40px rgba(0,0,0,0.4); border-color: var(--primary-2); }
+    [data-theme="light"] details.price-group[open] { box-shadow: 0 15px 40px rgba(0,0,0,0.1); }
+
+    summary.group-header { padding: 20px 24px; font-family: 'Raleway', sans-serif; font-size: 1.2rem; font-weight: 800; text-transform: uppercase; cursor: pointer; display: flex; align-items: center; justify-content: space-between; list-style: none; transition: 0.3s; user-select: none; }
+    summary.group-header::-webkit-details-marker { display: none; }
+    .group-header .title-wrap { display: flex; align-items: center; gap: 12px; }
+    .group-header i.icon-main { font-size: 1.4rem; }
+    .group-header i.caret { transition: transform 0.3s ease; opacity: 0.7; }
+    details[open] .group-header i.caret { transform: rotate(180deg); color: var(--text); opacity: 1; }
+    details[open] .group-header { border-bottom: 1px solid var(--panel-strong); background: rgba(0,0,0,0.1); }
+    [data-theme="light"] details[open] .group-header { background: rgba(0,0,0,0.03); }
+
+    .group-rare .group-header { color: var(--rare); }
+    .group-epic .group-header { color: var(--epic); }
+    .group-legendary .group-header { color: var(--legendary); }
+    .group-mythic .group-header { color: var(--mythic); }
+
+    .group-content { padding: 10px 24px 24px; animation: slideDown 0.3s ease-out forwards; }
+    @keyframes slideDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
+
+    .service-list { list-style: none; padding: 0; margin: 0; }
+    .service-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px dashed var(--panel-strong); cursor: pointer; transition: 0.2s; }
+    .service-item:hover { background: rgba(255,255,255,0.02); }
+    .service-item:last-child { border-bottom: none; padding-bottom: 0; }
+    
+    .checkbox-wrap { display: flex; align-items: center; gap: 12px; font-size: 1rem; font-weight: 500; cursor: pointer; user-select: none; flex: 1;}
+    .checkbox-wrap input { display: none; }
+    .checkmark { width: 22px; height: 22px; border: 2px solid var(--muted); border-radius: 6px; display: flex; justify-content: center; align-items: center; transition: 0.2s; flex-shrink: 0; }
+    .checkbox-wrap input:checked + .checkmark { background: var(--primary-2); border-color: var(--primary-2); }
+    .checkbox-wrap input:checked + .checkmark::after { content: '\f00c'; font-family: FontAwesome; color: white; font-size: 12px; }
+    .service-desc { display: flex; flex-direction: column; }
+    .service-note { font-size: 0.8rem; opacity: 0.6; font-weight: 400; margin-top: 4px; }
+
+    .price-tag { font-weight: 800; font-size: 1.1rem; color: var(--primary-2); white-space: nowrap; margin-left: 15px;}
+    .group-mythic .price-tag { color: var(--mythic); }
+    .group-legendary .price-tag { color: var(--legendary); }
+    .group-epic .price-tag { color: var(--epic); }
+
+    /* THÔNG TIN LIÊN HỆ & THANH TOÁN */
+    .payment-section { margin-top: 50px; margin-bottom: 40px; }
+    .trust-title { text-align: center; font-family: 'Raleway', sans-serif; font-size: 1.8rem; margin: 0 0 30px; text-transform: uppercase; }
+    
+    .payment-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 24px; }
+    .pay-card { 
+      background: linear-gradient(135deg, rgba(255,255,255,.05), rgba(255,255,255,.01)); 
+      border: 1px solid var(--panel-strong); border-radius: 20px; padding: 30px 20px; 
+      text-align: center; backdrop-filter: var(--blur); transition: 0.3s;
+    }
+    [data-theme="light"] .pay-card { background: linear-gradient(135deg, rgba(255,255,255,.9), rgba(255,255,255,.5)); }
+    .pay-card:hover { transform: translateY(-5px); border-color: var(--primary-2); box-shadow: 0 10px 30px rgba(6,182,212,0.15); }
+    
+    .pay-card i.main-icon { font-size: 2.5rem; margin-bottom: 15px; color: var(--primary-2); }
+    .pay-card h3 { margin: 0 0 10px; font-family: 'Raleway', sans-serif; font-size: 1.2rem; }
+    .acc-number { font-size: 1.4rem; font-weight: 900; color: #10b981; margin: 10px 0; letter-spacing: 1px; user-select: all; }
+    .acc-name { font-size: 0.95rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 2px; margin: 0; }
+
+    .btn-social { display: flex; align-items: center; justify-content: center; gap: 8px; width: 100%; padding: 12px; border-radius: 12px; margin-top: 12px; font-weight: 700; text-decoration: none; color: #fff; transition: 0.3s; border: none; }
+    .btn-social.fb { background: #1877F2; }
+    .btn-social.fb:hover { background: #166fe5; box-shadow: 0 4px 15px rgba(24,119,242,0.4); }
+    .btn-social.zl { background: #0068FF; }
+    .btn-social.zl:hover { background: #005ce6; box-shadow: 0 4px 15px rgba(0,104,255,0.4); }
+
+    
+    .floating-cart { position: fixed; bottom: 0; left: 0; width: 100%; background: linear-gradient(180deg, rgba(15,23,42,.95), rgba(15,23,42,1)); backdrop-filter: blur(20px); border-top: 1px solid var(--panel-strong); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; z-index: 50; box-shadow: 0 -10px 30px rgba(0,0,0,0.5); transform: translateY(100%); transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); }
+    [data-theme="light"] .floating-cart { background: rgba(255,255,255,0.95); border-top: 1px solid rgba(0,0,0,0.1); box-shadow: 0 -10px 30px rgba(0,0,0,0.1); }
+    .floating-cart.show { transform: translateY(0); }
+    
+    .cart-info { display: flex; flex-direction: column; }
+    .cart-label { font-size: 0.85rem; opacity: 0.7; text-transform: uppercase; letter-spacing: 1px; }
+    .cart-total { font-size: 1.6rem; font-weight: 900; color: #10b981; font-family: 'Raleway', sans-serif; }
+    
+    .btn-checkout { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; border: none; padding: 12px 24px; border-radius: 12px; font-weight: 800; font-size: 1rem; cursor: pointer; display: flex; align-items: center; gap: 8px; transition: 0.3s; text-decoration: none; }
+    .btn-checkout:hover { transform: scale(1.05); box-shadow: 0 5px 20px rgba(6,182,212,0.4); }
+
+    .no-results { text-align: center; padding: 20px; font-size: 1.1rem; color: var(--accent); display: none; }
+
+    @media (max-width: 600px) {
+      .group-header { font-size: 1.05rem; padding: 15px 18px; }
+      .service-item { flex-direction: column; align-items: flex-start; gap: 10px; }
+      .price-tag { margin-left: 34px; font-size: 1.2rem; }
+      .floating-cart { padding: 12px 16px; }
+      .cart-total { font-size: 1.3rem; }
+      .btn-checkout { padding: 10px 18px; font-size: 0.95rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <aside class="sidebar" id="sidebar">
+    <button class="close-btn" onclick="toggleSidebar(false)">×</button>
+      <div class="brand" style="background: linear-gradient(90deg, rgba(255,0,0,0.15), transparent); padding: 10px 14px; border-radius: 12px; border-left: 3px solid #ff0000; margin-bottom: 20px; display: flex; align-items: center; gap: 12px; transition: 0.3s;">
+  <img src="sayuuuu.png" alt="Logo" onerror="this.src='https://via.placeholder.com/32?text=H'" style="width: 38px; height: 38px; border-radius: 50%; border: 2px solid #ff0000; padding: 2px; background: rgba(255,255,255,0.1); box-shadow: 0 0 10px rgba(255,0,0,0.4);">
+  <strong style="color: #ffffff; font-weight: 800; font-size: 16px; letter-spacing: 0.5px; text-transform: uppercase; text-shadow: 0 0 8px rgba(255, 0, 0, 0.5);">Phan Tuấn Huy</strong>
+</div>
+    
+    <div class="nav-group">
+      
+      <a href="index.html"><i class="fa fa-home"></i> Trang chủ</a>
+      <a href="Giới thiệu.html"><i class="fa fa-user"></i> Giới thiệu</a>
+      <a href="Thông tin liên hệ.html"><i class="fa fa-envelope"></i> Thông tin liên hệ</a>
+		
+     <a href="Dữ Liệu.html"><i class="fa fa-envelope"></i>Dữ Liệu</a>
+      <a href="tai_ve.html"><i class="fa fa-download"></i> Tải về</a>
+     <a href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener" 
+   style="color: #FF0000; border: 2px solid #FF0000; background: rgba(255, 0, 0, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3);">
+   <i class="fa fa-youtube-play" style="color: #FF0000;"></i> Kênh YouTube
+</a>
+     <a href="Cày thuê.html" style="color: #00e5ff; border: 2px solid #00e5ff; background: rgba(0, 229, 255, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(0, 229, 255, 0.3);">
+  <i class="fa fa-gamepad" style="color: #00e5ff;"></i> Dịch vụ Cày Thuê
+</a>
+
+<a href="Minecraft.html" style="color: #2ecc71; border: 2px solid #2ecc71; background: rgba(46, 204, 113, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(46, 204, 113, 0.3);">
+  <i class="fa fa-cubes" style="color: #2ecc71;"></i> Server Minecraft
+</a>
+    </div>
+
+  <div class="nav-group dropdown">
+  <button class="dropdown-btn" onclick="toggleDropdown('supportMenu', this)" style="color: #06b6d4; border: 2px solid #06b6d4; background: rgba(6, 182, 212, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(6, 182, 212, 0.3);">
+    <i class="fa fa-life-ring" style="color: #06b6d4;"></i> Hỗ trợ <i class="fa fa-caret-down caret"></i>
+  </button>
+  
+  <div class="dropdown-menu" id="supportMenu" style="margin-top: 10px;">
+    <a href="https://www.facebook.com/TuanHuy130" target="_blank" rel="noopener" style="color: #1877f2; border: 2px solid #1877f2; background: rgba(24, 119, 242, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(24, 119, 242, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-facebook-official" style="color: #1877f2;"></i> Facebook
+    </a>
+    
+    <a href="#" style="color: #5865F2; border: 2px solid #5865F2; background: rgba(88, 101, 242, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(88, 101, 242, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-gamepad" style="color: #5865F2;"></i> Discord
+    </a>
+    
+    <a href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener" style="color: #ff0000; border: 2px solid #ff0000; background: rgba(255, 0, 0, 0.08); font-weight: 600; box-shadow: 0 0 10px rgba(255, 0, 0, 0.3); margin-bottom: 8px;">
+      <i class="fa fa-youtube-play" style="color: #ff0000;"></i> YouTube
+    </a>
+  </div>
+</div>
+  </aside>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar(false)"></div>
+  
+  <div class="topbar">
+    <button class="btn" onclick="toggleSidebar(true)"><i class="fa fa-bars"></i> Menu</button>
+    <button class="btn" id="themeToggle" aria-label="Đổi giao diện"><i class="fa fa-moon-o"></i></button>
+  </div>
+
+  <main class="blox-wrap">
+
+    <div class="hero-banner">
+      <h1>Bảng Giá Định Giá Tự Động</h1>
+      <p>Chọn các dịch vụ bạn cần, hệ thống sẽ tự động tính tổng tiền ở phía dưới.</p>
+      <div class="instruction"><i class="fa fa-mouse-pointer"></i> Click vào ô vuông để chọn dịch vụ</div>
+    </div>
+
+    <div class="search-container reveal">
+      <input type="text" id="searchInput" placeholder="Tìm dịch vụ (VD: CDK, V4, Level...)" onkeyup="filterServices()">
+      <i class="fa fa-search search-icon"></i>
+    </div>
+
+    <div id="noResultsMsg" class="no-results">
+      <i class="fa fa-frown-o" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+      Không tìm thấy dịch vụ nào phù hợp với từ khóa của bạn.
+    </div>
+
+    <details class="price-group group-rare" open>
+      <summary class="group-header">
+        <div class="title-wrap"><i class="fa fa-level-up icon-main"></i> 1. Cày Level & Tài Nguyên</div>
+        <i class="fa fa-chevron-down caret"></i>
+      </summary>
+      <div class="group-content">
+        <ul class="service-list">
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="100000" data-name="Cày Level (1-2550)">
+              <div class="checkmark"></div>
+              <div class="service-desc">
+                <span class="s-name">Cày Level (Từ 1 lên Max 2550)</span>
+                <span class="service-note">Mở khóa toàn bộ Sea, farm đảo cuối.</span>
+              </div>
+            </div>
+            <span class="price-tag">100K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Cày Level (1-1000)">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Cày Level (Từ 1 lên 1000)</span></div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="70000" data-name="Cày Level (1000-2550)">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Cày Level (Từ 1000 lên Max)</span></div>
+            </div>
+            <span class="price-tag">70K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="30000" data-name="10 Triệu Beli">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Cày 10 Triệu Tiền (Beli)</span></div>
+            </div>
+            <span class="price-tag">30K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="20000" data-name="10.000 Fragment">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Cày 10.000 Điểm F (Fragment)</span></div>
+            </div>
+            <span class="price-tag">20K</span>
+          </label>
+        </ul>
+      </div>
+    </details>
+
+    <details class="price-group group-epic">
+      <summary class="group-header">
+        <div class="title-wrap"><i class="fa fa-star icon-main"></i> 2. Cày Thông Thạo (Mastery)</div>
+        <i class="fa fa-chevron-down caret"></i>
+      </summary>
+      <div class="group-content">
+        <ul class="service-list">
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Max Mas Trái Ác Quỷ">
+              <div class="checkmark"></div>
+              <div class="service-desc">
+                <span class="s-name">Max Mastery Trái Ác Quỷ (Lv.600)</span>
+                <span class="service-note">Cày từ lv 1 lên 600.</span>
+              </div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Max Mas Kiếm">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Max Mastery Kiếm (Lv.600)</span></div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Max Mas Súng">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Max Mastery Súng (Lv.600)</span></div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Max Mas Melee">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Max Mastery Melee (Lv.600)</span></div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+        </ul>
+      </div>
+    </details>
+
+    <details class="price-group group-legendary">
+      <summary class="group-header">
+        <div class="title-wrap"><i class="fa fa-gavel icon-main"></i> 3. Vật Phẩm & Vũ Khí VIP</div>
+        <i class="fa fa-chevron-down caret"></i>
+      </summary>
+      <div class="group-content">
+        <ul class="service-list">
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="80000" data-name="Lấy God Human">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Lấy võ God Human</span></div>
+            </div>
+            <span class="price-tag">80K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="80000" data-name="Lấy CDK">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Cursed Dual Katana (CDK)</span></div>
+            </div>
+            <span class="price-tag">80K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="50000" data-name="Lấy Soul Guitar">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Lấy súng Soul Guitar</span></div>
+            </div>
+            <span class="price-tag">50K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="40000" data-name="Lưỡi Hái / Kiếm Buddy">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Lưỡi Hái / Kiếm Buddy</span></div>
+            </div>
+            <span class="price-tag">40K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="25000" data-name="Mũ Phi Công">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Mũ Phi Công / Áo Choàng Đen</span></div>
+            </div>
+            <span class="price-tag">25K</span>
+          </label>
+        </ul>
+      </div>
+    </details>
+
+    <details class="price-group group-mythic">
+      <summary class="group-header">
+        <div class="title-wrap"><i class="fa fa-superpowers icon-main"></i> 4. Thức Tỉnh & Tộc V4</div>
+        <i class="fa fa-chevron-down caret"></i>
+      </summary>
+      <div class="group-content">
+        <ul class="service-list">
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="150000" data-name="Trọn Gói V4 Full Gear">
+              <div class="checkmark"></div>
+              <div class="service-desc">
+                <span class="s-name">Trọn Gói Tộc V4 (Full Gear)</span>
+                <span class="service-note">Làm từ A-Z, hỗ trợ tìm gạt cần nhanh chóng.</span>
+              </div>
+            </div>
+            <span class="price-tag">150K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="20000" data-name="Đánh Boss lấy Gương">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Đánh Boss lấy Gương (Fractal)</span></div>
+            </div>
+            <span class="price-tag">20K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="20000" data-name="Kéo Trial (1 Turn)">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Kéo đi Trial (Tính giá 1 Lần)</span></div>
+            </div>
+            <span class="price-tag">20K</span>
+          </label>
+          <label class="service-item">
+            <div class="checkbox-wrap">
+              <input type="checkbox" class="calc-box" value="10000" data-name="Thức tỉnh 1 skill ác quỷ">
+              <div class="checkmark"></div>
+              <div class="service-desc"><span class="s-name">Đi Raid thức tỉnh 1 Skill Trái Ác Quỷ</span></div>
+            </div>
+            <span class="price-tag">10K</span>
+          </label>
+        </ul>
+      </div>
+    </details>
+
+    <section class="payment-section reveal">
+      <h2 class="trust-title">Thông Tin Thanh Toán & Liên Hệ</h2>
+      <div class="payment-grid">
+        
+        <div class="pay-card">
+          <i class="fa fa-university main-icon"></i>
+          <h3>Chuyển Khoản Ngân Hàng</h3>
+          <p class="acc-number">0764 390 492</p>
+          <p class="acc-name">PHAN tuấn huy</p>
+        </div>
+
+        <div class="pay-card">
+          <i class="fa fa-qrcode main-icon" style="color: #d82d8b;"></i>
+          <h3>Ví Điện Tử MoMo</h3>
+          <p class="acc-number">0764 390 492</p>
+          <p class="acc-name">phan tuấn huy</p>
+        </div>
+
+        <div class="pay-card">
+          <i class="fa fa-paper-plane main-icon" style="color: #0068FF;"></i>
+          <h3>Liên Hệ Nhanh</h3>
+          <a href="https://www.facebook.com/TuanHuy130" target="_blank" class="btn-social fb">
+            <i class="fa fa-facebook-official"></i> Nhắn Tin Facebook
+          </a>
+          <a href="https://zalo.me/09xxxxxxxx" target="_blank" class="btn-social zl">
+            <i class="fa fa-commenting"></i> Zalo: 0764390492
+          </a>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <div class="floating-cart" id="cartBar">
+    <div class="cart-info">
+      <span class="cart-label">Tổng tạm tính:</span>
+      <span class="cart-total" id="totalPrice">0 VNĐ</span>
+    </div>
+    <a href="#" id="checkoutBtn" class="btn-checkout" target="_blank">
+      Inbox Đặt Lịch <i class="fa fa-paper-plane"></i>
+    </a>
+  </div>
+
+  <script>
+    function toggleSidebar(open) {
+      try {
+        const sidebar = document.getElementById('sidebar');
+        const overlay = document.getElementById('overlay');
+        if(open) { sidebar.classList.add('open'); overlay.classList.add('show'); } 
+        else { sidebar.classList.remove('open'); overlay.classList.remove('show'); }
+      } catch(e) {}
+    }
+
+    function toggleDropdown(id, btnElement) {
+      try {
+        const menu = document.getElementById(id);
+        const isOpen = menu.style.display === 'block';
+        document.querySelectorAll('.dropdown-menu').forEach(m => { if(m.id !== id) m.style.display = 'none'; });
+        document.querySelectorAll('.dropdown-btn').forEach(b => { if(b !== btnElement) b.classList.remove('active'); });
+        menu.style.display = isOpen ? 'none' : 'block';
+        if(btnElement) { btnElement.classList.toggle('active', !isOpen); }
+      } catch(e) {}
+    }
+
+    try {
+      const themeToggleBtn = document.getElementById('themeToggle');
+      let savedTheme = localStorage.getItem('theme') || 'dark';
+      document.documentElement.setAttribute('data-theme', savedTheme);
+      
+      function updateThemeIcon(theme) {
+        if(themeToggleBtn) themeToggleBtn.innerHTML = theme === 'light' ? '<i class="fa fa-moon-o"></i>' : '<i class="fa fa-sun-o"></i>';
+      }
+      updateThemeIcon(savedTheme);
+
+      if(themeToggleBtn) {
+        themeToggleBtn.addEventListener('click', () => {
+          const next = document.documentElement.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+          document.documentElement.setAttribute('data-theme', next);
+          localStorage.setItem('theme', next);
+          updateThemeIcon(next);
+        });
+      }
+    } catch(e) {}
+
+    
+    const checkboxes = document.querySelectorAll('.calc-box');
+    const totalPriceEl = document.getElementById('totalPrice');
+    const cartBar = document.getElementById('cartBar');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+    
+    
+    const detailsElements = document.querySelectorAll('details.price-group');
+    detailsElements.forEach((targetDetail) => {
+      targetDetail.addEventListener('click', (e) => {
+        
+        if(e.target.tagName.toLowerCase() === 'input') return;
+        
+        const isSearching = document.getElementById('searchInput').value.trim() !== '';
+        if(!isSearching) {
+          detailsElements.forEach((detail) => {
+            if (detail !== targetDetail) { detail.removeAttribute('open'); }
+          });
+        }
+      });
+    });
+
+    function calculateTotal() {
+      let total = 0;
+      let selectedItems = [];
+      
+      checkboxes.forEach(box => {
+        if(box.checked) {
+          total += parseInt(box.value);
+          selectedItems.push(box.getAttribute('data-name'));
+        }
+      });
+
+      totalPriceEl.textContent = new Intl.NumberFormat('vi-VN').format(total) + ' VNĐ';
+
+      if(total > 0) { cartBar.classList.add('show'); } 
+      else { cartBar.classList.remove('show'); }
+
+      let fbMessage = "Chào bạn, mình muốn thuê cày các gói sau: %0A";
+      selectedItems.forEach((item) => { fbMessage += `- ${item}%0A`; });
+      fbMessage += `%0ATổng dự kiến là: ${new Intl.NumberFormat('vi-VN').format(total)} VNĐ. Tư vấn cho mình nhé!`;
+      
+      checkoutBtn.href = `https://m.me/TuanHuy130?text=${fbMessage}`;
+    }
+
+    checkboxes.forEach(box => {
+      box.addEventListener('change', calculateTotal);
+    });
+
+ 
+    function filterServices() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      const groups = document.querySelectorAll('.price-group');
+      let totalVisibleItems = 0;
+
+      groups.forEach(group => {
+        let hasVisibleItem = false;
+        const items = group.querySelectorAll('.service-item');
+
+        items.forEach(item => {
+          // Lấy chữ trong thẻ span chứa tên dịch vụ
+          const text = item.querySelector('.s-name').textContent.toLowerCase();
+          if (text.includes(query)) {
+            item.style.display = 'flex';
+            hasVisibleItem = true;
+            totalVisibleItems++;
+          } else {
+            item.style.display = 'none';
+          }
+        });
+
+       
+        if (hasVisibleItem) {
+          group.style.display = 'block';
+          if (query !== '') {
+            group.setAttribute('open', '');
+          }
+        } else {
+          group.style.display = 'none';
+        }
+      });
+
+   
+      const noResultsMsg = document.getElementById('noResultsMsg');
+      if(totalVisibleItems === 0 && query !== '') {
+        noResultsMsg.style.display = 'block';
+      } else {
+        noResultsMsg.style.display = 'none';
+      }
+    }
+
+    
+    try {
+      const io = new IntersectionObserver(entries => {
+        entries.forEach(e => {
+          if(e.isIntersecting) { e.target.classList.add('visible'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.1 });
+      document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+    } catch(e) {}
+  </script>
+</body>
+</html>
