@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="vi" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tải về & Công cụ — Phan Tuấn Huy</title>
+  <link rel="shortcut icon" href="haha.png" type="image/png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Public+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <style>
+    :root {
+      --bg: #0a0e1a;
+      --bg-soft: #0f1526;
+      --panel: rgba(255,255,255,.05);
+      --panel-strong: rgba(255,255,255,.10);
+      --text: #e8edf7;
+      --muted: #8b95ad;
+      --primary: #06b6d4;
+      --primary-2: #14b8a6;
+      --accent: #f59e0b;
+      --border: rgba(148,163,184,.14);
+      --shadow: 0 18px 40px rgba(2,6,23,.45);
+      --radius: 16px;
+      --radius-lg: 22px;
+      --blur: blur(14px);
+    }
+    [data-theme="light"] {
+      --bg: #f2f5fb;
+      --bg-soft: #ffffff;
+      --panel: rgba(15,23,42,.04);
+      --panel-strong: rgba(15,23,42,.08);
+      --text: #0f172a;
+      --muted: #5b6577;
+      --primary: #0891b2;
+      --primary-2: #0d9488;
+      --accent: #d97706;
+      --border: rgba(15,23,42,.10);
+      --shadow: 0 14px 34px rgba(15,23,42,.10);
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    html, body { height: 100%; }
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Public Sans', system-ui, -apple-system, sans-serif;
+      line-height: 1.65;
+      overflow-x: hidden;
+      transition: background .4s ease, color .4s ease;
+      position: relative;
+    }
+
+    /* ===== Nền aurora động (luôn đẹp kể cả khi thiếu ảnh) ===== */
+    .bg-decor { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+    .blob { position: absolute; border-radius: 50%; filter: blur(90px); opacity: .5; will-change: transform; }
+    .blob.b1 { width: 520px; height: 520px; top: -160px; left: -120px; background: radial-gradient(circle, rgba(6,182,212,.55), transparent 65%); animation: drift1 18s ease-in-out infinite alternate; }
+    .blob.b2 { width: 480px; height: 480px; bottom: -140px; right: -100px; background: radial-gradient(circle, rgba(20,184,166,.45), transparent 65%); animation: drift2 22s ease-in-out infinite alternate; }
+    .blob.b3 { width: 380px; height: 380px; top: 40%; left: 55%; background: radial-gradient(circle, rgba(245,158,11,.22), transparent 65%); animation: drift3 26s ease-in-out infinite alternate; }
+    [data-theme="light"] .blob { opacity: .35; }
+    @keyframes drift1 { to { transform: translate(80px, 60px) scale(1.1); } }
+    @keyframes drift2 { to { transform: translate(-70px, -50px) scale(1.15); } }
+    @keyframes drift3 { to { transform: translate(-60px, 70px) scale(.9); } }
+
+    /* ===== Sidebar ===== */
+    .sidebar {
+      position: fixed; inset: 0 auto 0 0; width: 290px; height: 100vh;
+      background: color-mix(in srgb, var(--bg-soft) 82%, transparent);
+      backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur);
+      border-right: 1px solid var(--border);
+      box-shadow: var(--shadow);
+      transform: translateX(-102%); transition: transform .4s cubic-bezier(.2,.8,.2,1);
+      z-index: 60; padding: 20px 16px 28px; overflow-y: auto;
+    }
+    .sidebar.open { transform: translateX(0); }
+    .close-btn { position: absolute; right: 14px; top: 14px; width: 34px; height: 34px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 10px; background: var(--panel); color: var(--muted); cursor: pointer; font-size: 18px; transition: .25s; line-height: 1; }
+    .close-btn:hover { color: var(--accent); border-color: var(--accent); transform: rotate(90deg); }
+
+    .brand { display: flex; align-items: center; gap: 14px; padding: 6px 8px 18px; border-bottom: 1px solid var(--border); margin-bottom: 18px; }
+    .avatar { position: relative; width: 48px; height: 48px; border-radius: 50%; flex: 0 0 auto; background: linear-gradient(135deg, var(--primary), var(--primary-2)); display: grid; place-items: center; color: #fff; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 22px; box-shadow: 0 6px 18px rgba(6,182,212,.35); }
+    .avatar img { position: absolute; inset: 0; width: 100%; height: 100%; border-radius: 50%; object-fit: cover; }
+    .brand-text { display: flex; flex-direction: column; line-height: 1.25; min-width: 0; }
+    .brand-text strong { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: 17px; letter-spacing: .2px; }
+    .brand-text span { font-size: 12px; color: var(--muted); margin-top: 3px; }
+
+    .nav-label { font-size: 11px; text-transform: uppercase; letter-spacing: .14em; color: var(--muted); margin: 18px 12px 8px; font-weight: 600; }
+    .nav-group { display: flex; flex-direction: column; gap: 4px; }
+
+    .nav-item, .dropdown-btn {
+      display: flex; align-items: center; gap: 12px; width: 100%; padding: 11px 14px;
+      border-radius: 12px; color: var(--text); text-decoration: none; font-size: 15px; font-weight: 500;
+      border: 1px solid transparent; background: transparent; cursor: pointer; outline: none;
+      transition: background .2s ease, border-color .2s ease, transform .2s ease;
+      font-family: inherit; text-align: left;
+    }
+    .nav-icon { width: 34px; height: 34px; flex: 0 0 auto; display: grid; place-items: center; border-radius: 10px; background: var(--panel); color: var(--primary); font-size: 15px; transition: .2s ease; }
+    .nav-item:hover, .dropdown-btn:hover { background: var(--panel); border-color: var(--border); transform: translateX(3px); }
+    .nav-item:hover .nav-icon, .dropdown-btn:hover .nav-icon { transform: scale(1.08); }
+    .caret { margin-left: auto; font-size: 13px; color: var(--muted); transition: transform .3s ease; }
+    .dropdown-btn.active .caret { transform: rotate(180deg); }
+
+    /* Màu nhận diện nhẹ nhàng cho từng mục (không còn viền neon chói) */
+    .accent-red    .nav-icon { background: rgba(255,59,48,.12);  color: #ff453a; }
+    .accent-sky    .nav-icon { background: rgba(56,189,248,.14); color: #38bdf8; }
+    .accent-green  .nav-icon { background: rgba(74,222,128,.14); color: #4ade80; }
+    .accent-teal   .nav-icon { background: rgba(6,182,212,.14);  color: #22d3ee; }
+    .accent-fb     .nav-icon { background: rgba(24,119,242,.14); color: #4f93f5; }
+    .accent-discord .nav-icon { background: rgba(88,101,242,.16); color: #8b93ff; }
+    .accent-amber  .nav-icon { background: rgba(245,158,11,.16); color: #fbbf24; }
+
+    .dropdown-menu { display: grid; grid-template-rows: 0fr; transition: grid-template-rows .35s ease; padding-left: 8px; }
+    .dropdown-menu.open { grid-template-rows: 1fr; }
+    .dropdown-menu > div { overflow: hidden; display: flex; flex-direction: column; gap: 4px; padding-top: 6px; }
+    .dropdown-menu .nav-item { font-size: 14px; padding: 9px 12px; }
+
+    .overlay { position: fixed; inset: 0; background: rgba(2,6,23,.55); backdrop-filter: blur(2px); opacity: 0; visibility: hidden; transition: .35s; z-index: 50; }
+    .overlay.show { opacity: 1; visibility: visible; }
+
+    /* ===== Topbar ===== */
+    .topbar { position: fixed; left: 16px; top: 16px; z-index: 40; display: flex; gap: 8px; align-items: center; }
+    .btn { display: inline-flex; align-items: center; gap: 8px; border: 1px solid var(--border); background: color-mix(in srgb, var(--bg-soft) 70%, transparent); backdrop-filter: var(--blur); -webkit-backdrop-filter: var(--blur); color: var(--text); padding: 10px 16px; border-radius: 12px; cursor: pointer; transition: .25s; font-weight: 600; font-size: 14px; font-family: inherit; }
+    .btn:hover { transform: translateY(-2px); border-color: var(--primary); color: var(--primary); box-shadow: 0 8px 20px rgba(6,182,212,.18); }
+    .btn.icon-only { padding: 10px 13px; }
+
+    /* ===== Hero ===== */
+    .hero {
+      position: relative; min-height: 94vh; display: grid; place-items: center; text-align: center;
+      padding: 130px 20px 90px;
+      background-image: linear-gradient(to bottom, color-mix(in srgb, var(--bg) 35%, transparent), var(--bg)), url('h.jpg');
+      background-size: cover; background-position: center;
+    }
+    .hero-inner { max-width: 820px; }
+    .eyebrow { display: inline-flex; align-items: center; gap: 10px; padding: 7px 16px; border-radius: 999px; border: 1px solid var(--border); background: var(--panel); backdrop-filter: var(--blur); font-size: 13px; font-weight: 600; letter-spacing: .3px; margin-bottom: 26px; }
+    .eyebrow .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--primary-2); box-shadow: 0 0 0 4px rgba(20,184,166,.18); animation: pulse 2s ease-in-out infinite; }
+    @keyframes pulse { 50% { box-shadow: 0 0 0 7px rgba(20,184,166,.08); } }
+
+    .hero h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(36px, 6vw, 68px); line-height: 1.08; margin: 0 0 20px; letter-spacing: -.5px; }
+    .gradient-text { background: linear-gradient(120deg, var(--primary), var(--primary-2) 55%, var(--accent)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+    .hero .tagline { max-width: 620px; margin: 0 auto 14px; font-size: clamp(16px, 2vw, 19px); color: var(--muted); }
+    .hero .role-pills { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin: 22px auto 34px; }
+    .pill { padding: 7px 16px; border-radius: 999px; font-size: 13px; font-weight: 600; border: 1px solid var(--border); background: var(--panel); color: var(--text); }
+    .pill i { margin-right: 7px; color: var(--primary); }
+
+    .cta { display: inline-flex; gap: 14px; align-items: center; flex-wrap: wrap; justify-content: center; }
+    .btn-primary { display: inline-flex; align-items: center; gap: 9px; background: linear-gradient(135deg, var(--primary), var(--primary-2)); border: 0; padding: 15px 28px; border-radius: 14px; font-weight: 700; font-size: 15px; color: #fff; box-shadow: 0 12px 28px rgba(6,182,212,.35); text-decoration: none; transition: .3s; }
+    .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 18px 36px rgba(6,182,212,.5); }
+    .btn-outline { display: inline-flex; align-items: center; gap: 9px; background: var(--panel); border: 1px solid var(--border); padding: 14px 26px; border-radius: 14px; font-weight: 600; font-size: 15px; color: var(--text); text-decoration: none; backdrop-filter: var(--blur); transition: .3s; }
+    .btn-outline:hover { border-color: var(--primary); color: var(--primary); transform: translateY(-3px); }
+
+    .scroll-hint { position: absolute; bottom: 26px; left: 50%; transform: translateX(-50%); color: var(--muted); font-size: 22px; animation: bob 2s ease-in-out infinite; }
+    @keyframes bob { 50% { transform: translate(-50%, 8px); } }
+
+    /* ===== Section & Cards ===== */
+    .section { padding: 90px 20px; }
+    .container { max-width: 1120px; margin: 0 auto; }
+    .section-head { text-align: center; margin-bottom: 48px; }
+    .section-head .kicker { font-size: 13px; font-weight: 700; letter-spacing: .18em; text-transform: uppercase; color: var(--primary); }
+    .section-head h2 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(26px, 4vw, 38px); margin: 10px 0 8px; }
+    .section-head p { color: var(--muted); max-width: 560px; margin: 0 auto; }
+
+    .grid { display: grid; gap: 22px; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+    @media (max-width: 960px) { .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+    @media (max-width: 620px) { .grid { grid-template-columns: 1fr; } }
+
+    .card {
+      display: flex; flex-direction: column;
+      border: 1px solid var(--border);
+      background: linear-gradient(180deg, color-mix(in srgb, var(--bg-soft) 90%, transparent), var(--panel));
+      border-radius: var(--radius-lg); padding: 28px 26px;
+      box-shadow: var(--shadow); position: relative; overflow: hidden;
+      transition: transform .35s cubic-bezier(.2,.8,.2,1), border-color .35s ease, box-shadow .35s ease;
+    }
+    .card::before { content: ""; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--primary), var(--primary-2)); opacity: 0; transition: opacity .3s; }
+    .card::after { content: ""; position: absolute; inset: auto -30% -50% -30%; height: 60%; background: radial-gradient(50% 80% at 50% 0%, rgba(6,182,212,.18), transparent 60%); pointer-events: none; opacity: 0; transition: opacity .35s; }
+    .card:hover { transform: translateY(-8px); border-color: color-mix(in srgb, var(--primary) 55%, var(--border)); box-shadow: 0 24px 50px rgba(2,6,23,.5); }
+    .card:hover::before, .card:hover::after { opacity: 1; }
+
+    .card .card-icon { width: 52px; height: 52px; border-radius: 15px; display: grid; place-items: center; font-size: 22px; background: linear-gradient(135deg, rgba(6,182,212,.18), rgba(20,184,166,.18)); color: var(--primary); margin-bottom: 18px; border: 1px solid var(--border); transition: transform .3s; }
+    .card:hover .card-icon { transform: scale(1.08) rotate(-4deg); }
+    .card .meta { display: inline-flex; align-items: center; gap: 7px; font-size: 11.5px; font-weight: 700; color: var(--primary-2); text-transform: uppercase; letter-spacing: .12em; margin-bottom: 4px; }
+    .card h3 { margin: 6px 0 10px; font-size: 1.3rem; font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; }
+    .card p { margin: 0 0 20px; color: var(--muted); font-size: .95rem; flex: 1; }
+    .card a.btn-link { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 11px; text-decoration: none; border: 1px solid var(--border); color: var(--text); font-weight: 600; font-size: .88rem; transition: .25s; background: var(--panel); position: relative; z-index: 2; align-self: flex-start; }
+    .card a.btn-link:hover { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; border-color: transparent; transform: translateX(4px); }
+    .card a.btn-link i { transition: transform .25s; }
+    .card a.btn-link:hover i { transform: translateX(3px); }
+
+    /* ===== Footer ===== */
+    footer { border-top: 1px solid var(--border); background: color-mix(in srgb, var(--bg-soft) 60%, transparent); backdrop-filter: var(--blur); padding: 48px 20px 36px; text-align: center; }
+    .social { display: flex; gap: 14px; justify-content: center; margin: 0 0 20px; }
+    .social a { width: 46px; height: 46px; display: grid; place-items: center; border: 1px solid var(--border); border-radius: 14px; color: var(--text); text-decoration: none; transition: .25s ease; font-size: 1.15rem; background: var(--panel); }
+    .social a:hover { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; border-color: transparent; transform: translateY(-4px); box-shadow: 0 10px 22px rgba(6,182,212,.35); }
+    footer small { color: var(--muted); font-size: 13.5px; }
+    footer small b { color: var(--text); }
+
+    /* ===== Reveal animation ===== */
+    .reveal { opacity: 0; transform: translateY(26px); transition: opacity .8s cubic-bezier(.2,.7,.2,1), transform .8s cubic-bezier(.2,.7,.2,1); transition-delay: var(--d, 0s); }
+    .reveal.in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .reveal { opacity: 1; transform: none; transition: none; } .blob, .scroll-hint, .eyebrow .dot { animation: none !important; } }
+  
+/* ===== Sub-page base ===== */
+.page-main { max-width: 1140px; margin: 0 auto; padding: 110px 20px 90px; }
+.page-main > .blob { display: none; }
+.reveal.visible, .reveal.in { opacity: 1; transform: none; }
+.panel { border: 1px solid var(--border); background: linear-gradient(180deg, color-mix(in srgb, var(--bg-soft) 90%, transparent), var(--panel)); border-radius: var(--radius-lg); padding: 28px; box-shadow: var(--shadow); }
+.muted { color: var(--muted); }
+.page-header, .contact-hero { text-align: center; margin-bottom: 42px; }
+.page-header h1, .contact-hero h1 { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 800; font-size: clamp(30px, 4.5vw, 48px); margin: 0 0 10px; letter-spacing: -.5px; }
+.page-header p { color: var(--muted); max-width: 620px; margin: 8px auto 0; }
+.search-container { position: relative; max-width: 560px; margin: 0 auto 30px; }
+.search-container input { width: 100%; padding: 14px 20px 14px 48px; border-radius: 14px; border: 1px solid var(--border); background: var(--panel); color: var(--text); font-size: 15px; font-family: inherit; outline: none; transition: .25s; }
+.search-container input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(6,182,212,.15); }
+.search-icon { position: absolute; left: 18px; top: 50%; transform: translateY(-50%); color: var(--muted); }
+.no-results { display: none; text-align: center; padding: 40px 20px; color: var(--muted); border: 1px dashed var(--border); border-radius: var(--radius-lg); }
+
+.split-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+@media (max-width: 900px) { .split-layout { grid-template-columns: 1fr; } }
+.os-header { display: flex; align-items: center; gap: 10px; padding: 12px 18px; border-radius: 12px; font-weight: 800; letter-spacing: .12em; font-size: 14px; margin-bottom: 16px; border: 1px solid var(--border); }
+.os-header.win { background: rgba(6,182,212,.1); color: var(--primary); }
+.os-header.mac { background: rgba(245,158,11,.12); color: var(--accent); }
+.d-grid-half { display: grid; gap: 16px; }
+.d-card { border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 22px; background: linear-gradient(180deg, color-mix(in srgb, var(--bg-soft) 90%, transparent), var(--panel)); box-shadow: var(--shadow); transition: .3s; display: flex; flex-direction: column; }
+.d-card:hover { transform: translateY(-5px); border-color: var(--primary); }
+.d-card h3 { font-family: 'Bricolage Grotesque', sans-serif; font-size: 17px; margin: 10px 0 8px; }
+.d-card .desc { color: var(--muted); font-size: .88rem; margin: 0 0 16px; flex: 1; }
+.card-tags { display: flex; flex-wrap: wrap; gap: 6px; }
+.card-tags .badge { padding: 4px 10px; border-radius: 999px; background: rgba(6,182,212,.12); color: var(--primary); font-size: 11px; font-weight: 700; letter-spacing: .3px; }
+.card-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.btn-download { display: inline-flex; align-items: center; gap: 7px; padding: 9px 14px; border-radius: 10px; background: var(--panel); border: 1px solid var(--border); color: var(--text); text-decoration: none; font-size: .82rem; font-weight: 600; transition: .2s; }
+.btn-download:hover { background: linear-gradient(135deg, var(--primary), var(--primary-2)); color: #fff; border-color: transparent; transform: translateY(-2px); }
+
+/* ============ UPGRADE V2 — đỉnh nốc kịch trần ============ */
+/* Nền lưới mờ + hạt nhiễu */
+.bg-decor::after { content:""; position:absolute; inset:0; pointer-events:none;
+  background-image: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px);
+  background-size: 46px 46px;
+  -webkit-mask-image: radial-gradient(ellipse at center, black 25%, transparent 78%);
+  mask-image: radial-gradient(ellipse at center, black 25%, transparent 78%);
+}
+body::after { content:""; position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:.05;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='140' height='140' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+/* Scrollbar & bôi đen tùy chỉnh */
+::-webkit-scrollbar { width: 10px; }
+::-webkit-scrollbar-track { background: var(--bg); }
+::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--primary), var(--primary-2)); border-radius: 10px; border: 2px solid var(--bg); }
+::selection { background: var(--primary); color: #fff; }
+/* Chữ gradient lấp lánh */
+.gradient-text { background-size: 220% auto; animation: shimmer 4.5s linear infinite; }
+@keyframes shimmer { to { background-position: 220% center; } }
+/* Hiệu ứng spotlight theo chuột trên thẻ */
+.card, .d-card, .data-category-card, .srv-card, .feat-card, .c-card, .pay-card, .stat-card { position: relative; overflow: hidden; }
+.card::before, .d-card::before, .data-category-card::before, .srv-card::before, .feat-card::before, .c-card::before, .pay-card::before {
+  content:""; position:absolute; inset:0; pointer-events:none; z-index:1; opacity:0; transition: opacity .35s ease;
+  background: radial-gradient(420px circle at var(--mx,50%) var(--my,0%), rgba(6,182,212,.14), transparent 45%);
+}
+.card:hover::before, .d-card:hover::before, .data-category-card:hover:hover::before, .srv-card:hover::before, .feat-card:hover::before, .c-card:hover::before, .pay-card:hover::before { opacity:1; }
+.card > *, .d-card > *, .data-category-card > *, .srv-card > *, .feat-card > *, .c-card > *, .pay-card > * { position: relative; z-index: 2; }
+/* Ánh sáng quét trên nút chính */
+.btn-primary, .btn-checkout, .btn-copy, .btn-contact, .btn-download:hover { position: relative; overflow: hidden; }
+.btn-primary::after, .btn-checkout::after, .btn-copy::after, .btn-contact::after {
+  content:""; position:absolute; top:0; left:-90%; width:45%; height:100%;
+  background: linear-gradient(100deg, transparent, rgba(255,255,255,.4), transparent);
+  transform: skewX(-20deg); animation: shine 3.4s ease-in-out infinite;
+}
+@keyframes shine { 55%,100% { left: 140%; } }
+/* Viền gradient phát sáng khi hover thẻ */
+.card:hover, .d-card:hover, .data-category-card:hover, .srv-card:hover, .feat-card:hover, .c-card:hover, .pay-card:hover {
+  box-shadow: 0 24px 60px rgba(2,6,23,.55), 0 0 0 1px color-mix(in srgb, var(--primary) 45%, transparent), 0 0 40px rgba(6,182,212,.18);
+}
+/* Marquee cuộn */
+.marquee { overflow: hidden; border-block: 1px solid var(--border); background: color-mix(in srgb, var(--bg-soft) 55%, transparent); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); padding: 15px 0; }
+.marquee-track { display: flex; gap: 0; width: max-content; animation: marquee 26s linear infinite; }
+.marquee-track:hover { animation-play-state: paused; }
+.marquee-track .group { display: flex; align-items: center; gap: 56px; padding-right: 56px; }
+.marquee-track .group span { font-family: 'Bricolage Grotesque', sans-serif; font-weight: 700; font-size: 15px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); white-space: nowrap; display: inline-flex; align-items: center; gap: 56px; }
+.marquee-track .group span::after { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--primary); box-shadow: 0 0 10px var(--primary); display: inline-block; }
+@keyframes marquee { to { transform: translateX(-50%); } }
+/* Avatar sidebar viền gradient xoay */
+.avatar { position: relative; }
+.avatar::before { content:""; position:absolute; inset:-3px; border-radius:50%; background: conic-gradient(from 0deg, var(--primary), var(--primary-2), var(--accent), var(--primary)); animation: spin 5s linear infinite; z-index:-1; }
+@keyframes spin { to { transform: rotate(360deg); } }
+/* Hero badge nhấp nháy */
+.eyebrow .dot { animation: pulse 1.8s ease-in-out infinite; }
+/* Nút topbar glow */
+.btn:hover { box-shadow: 0 0 24px rgba(6,182,212,.35); }
+
+</style>
+</head>
+<body>
+  <div class="bg-decor" aria-hidden="true">
+    <div class="blob b1"></div>
+    <div class="blob b2"></div>
+    <div class="blob b3"></div>
+  </div>
+
+  <aside class="sidebar" id="sidebar" aria-label="Thanh điều hướng">
+    <button class="close-btn" aria-label="Đóng menu" onclick="toggleSidebar(false)"><i class="fa fa-times"></i></button>
+
+    <div class="brand">
+      <div class="avatar">
+        <span>H</span>
+        <img src="sayuuuu.png" alt="Avatar Phan Tuấn Huy" onerror="this.remove()">
+      </div>
+      <div class="brand-text">
+        <strong>Phan Tuấn Huy</strong>
+        <span>IT Support &amp; Technician</span>
+      </div>
+    </div>
+
+    <div class="nav-label">Trang chính</div>
+    <nav class="nav-group">
+      <a class="nav-item" href="index.html"><span class="nav-icon"><i class="fa fa-home"></i></span> Trang chủ</a>
+      <a class="nav-item" href="Giới Thiệu.html"><span class="nav-icon"><i class="fa fa-user"></i></span> Giới thiệu</a>
+      <a class="nav-item" href="Thông tin liên hệ.html"><span class="nav-icon"><i class="fa fa-envelope"></i></span> Thông tin liên hệ</a>
+      <a class="nav-item" href="Dữ Liệu.html"><span class="nav-icon"><i class="fa fa-database"></i></span> Dữ Liệu</a>
+      <a class="nav-item" href="tai_ve.html"><span class="nav-icon"><i class="fa fa-download"></i></span> Tải về</a>
+    </nav>
+
+    <div class="nav-label">Dịch vụ &amp; Nội dung</div>
+    <nav class="nav-group">
+      <a class="nav-item accent-red" href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener"><span class="nav-icon"><i class="fa fa-youtube-play"></i></span> Kênh YouTube</a>
+      <a class="nav-item accent-green" href="Minecraft.html"><span class="nav-icon"><i class="fa fa-cubes"></i></span> Server Minecraft</a>
+    </nav>
+
+    <div class="nav-label">Khác</div>
+    <nav class="nav-group">
+      <div class="dropdown">
+        <button class="nav-item dropdown-btn accent-amber" onclick="toggleDropdown('supportMenu', this)">
+          <span class="nav-icon"><i class="fa fa-life-ring"></i></span> Hỗ trợ <i class="fa fa-caret-down caret"></i>
+        </button>
+        <div class="dropdown-menu" id="supportMenu">
+          <div>
+            <a class="nav-item accent-fb" href="https://www.facebook.com/TuanHuy130" target="_blank" rel="noopener"><span class="nav-icon"><i class="fa fa-facebook-official"></i></span> Facebook</a>
+            <a class="nav-item accent-discord" href="#"><span class="nav-icon"><i class="fa fa-headphones"></i></span> Discord</a>
+            <a class="nav-item accent-red" href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener"><span class="nav-icon"><i class="fa fa-youtube-play"></i></span> YouTube</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </aside>
+
+  <div class="overlay" id="overlay" onclick="toggleSidebar(false)"></div>
+
+  <div class="topbar">
+    <button class="btn" onclick="toggleSidebar(true)"><i class="fa fa-bars"></i> Menu</button>
+    <button class="btn icon-only" id="themeToggle" aria-label="Đổi giao diện"><i class="fa fa-sun-o"></i></button>
+  </div>
+
+  <main class="page-main">
+    <div class="blob"></div>
+
+    <header class="page-header reveal">
+      <h1>Kho Công Cụ Kỹ Thuật</h1>
+      <p>Danh sách 17 nhóm tiện ích . Dù bạn dùng Windows hay macOS, mình đều có giải pháp phần mềm tốt nhất.</p>
+    </header>
+
+    <div class="search-container reveal">
+      <input type="text" id="searchInput" placeholder="Tìm phần mềm, chức năng (VD: IDM, Ricoh, Máy in...)" onkeyup="filterTools()">
+      <i class="fa fa-search search-icon"></i>
+    </div>
+
+    <div class="split-layout">
+      
+      <div id="noResultsMsg" class="no-results">
+        <i class="fa fa-frown-o" style="font-size: 2rem; display: block; margin-bottom: 10px;"></i>
+        Rất tiếc, chưa có phần mềm nào khớp với tìm kiếm của bạn.
+      </div>
+
+      <section class="win-col">
+        <div class="os-header win reveal" id="winHeader"><i class="fa fa-windows"></i> WINDOWS</div>
+        <div class="d-grid-half" id="winGrid">
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">1. Giải nén (.exe)</span></div>
+            <h3>7-Zip & WinRAR</h3>
+            <p class="desc">Bảo bối "quốc dân" đọc trọn vẹn file RAR, ZIP, 7Z, ISO. Phần mềm bắt buộc phải cài ngay sau khi cài Win.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.7-zip.org/download.html" target="_blank"><i class="fa fa-download"></i> Tải 7-Zip (.exe)</a>
+              <a class="btn-download" href="https://www.win-rar.com/download.html" target="_blank"><i class="fa fa-download"></i> Tải WinRAR (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">2. Đồ họa / Văn bản</span></div>
+            <h3>Bộ Font Tiếng Việt (Win)</h3>
+            <p class="desc">Tổng hợp 2000+ Font Việt hóa (VNI, TCVN3, SVN, UTM). Cài đặt dễ dàng vào thẳng thư mục Fonts của Windows.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://download.com.vn/bo-font-full-108042"><i class="fa fa-google"></i> Tải trọn bộ Font Win</a>
+              <details>
+                <summary>Cách cài Font trên Windows</summary>
+                <p>Giải nén thư mục, bôi đen toàn bộ Font, click chuột phải chọn <code>Install for all users</code>.</p>
+              </details>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">3. Download Tốc Độ</span></div>
+            <h3>Internet Download Manager (IDM)</h3>
+            <p class="desc">Phần mềm IDM huyền thoại độc quyền cho Windows. Tự động chia nhỏ luồng tải file và bắt link video cực nhanh.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.internetdownloadmanager.com/download.html" target="_blank"><i class="fa fa-download"></i> Tải IDM (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">4. Tìm Kiếm Siêu Tốc</span></div>
+            <h3>Everything (Voidtools)</h3>
+            <p class="desc">Tìm kiếm file ẩn, thư mục trên ổ cứng NTFS của Windows với tốc độ tính bằng mili-giây, nhanh hơn 1000 lần Search mặc định.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.voidtools.com/downloads/" target="_blank"><i class="fa fa-download"></i> Tải Everything (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">5. Văn phòng / PDF</span></div>
+            <h3>Foxit PDF Reader</h3>
+            <p class="desc">Trình đọc, ghi chú và in ấn file PDF cực kỳ nhẹ. Không ngốn RAM và CPU hệ thống Windows như Acrobat.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.foxit.com/pdf-reader/" target="_blank"><i class="fa fa-download"></i> Tải Foxit Reader (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">6. Code / Text Editor</span></div>
+            <h3>Notepad++</h3>
+            <p class="desc">Trình soạn thảo mã nguồn nhẹ nhất cho Windows. Hỗ trợ đa ngôn ngữ, tự động lưu nháp chống mất điện.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://notepad-plus-plus.org/downloads/" target="_blank"><i class="fa fa-download"></i> Tải Notepad++ (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">7. Hỗ trợ từ xa</span></div>
+            <h3>UltraViewer / AnyDesk</h3>
+            <p class="desc">Bản cài đặt dành cho Windows. Cài đặt để kỹ thuật viên kết nối và sửa lỗi phần mềm cho bạn ngay lập tức.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://ultraviewer.net/vi/download.html" target="_blank"><i class="fa fa-download"></i> Tải UltraViewer (.exe)</a>
+              <a class="btn-download" href="https://anydesk.com/en/downloads/windows" target="_blank"><i class="fa fa-download"></i> Tải AnyDesk (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">8. Ngôn ngữ</span></div>
+            <h3>Sogou Pinyin (Win)</h3>
+            <p class="desc">Bộ gõ tiếng Trung số 1 hiện nay cho Windows. Tích hợp AI gợi ý từ vựng cực kỳ chuẩn xác.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://shurufa.sogou.com/windows" target="_blank"><i class="fa fa-download"></i> Tải Sogou (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">9. Tối ưu năng suất</span></div>
+            <h3>Microsoft PowerToys</h3>
+            <p class="desc">Bộ công cụ "chính chủ" từ Microsoft. Giúp ghim cửa sổ trên cùng, chia màn hình thông minh cho Win 10/11.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://learn.microsoft.com/vi-vn/windows/powertoys/" target="_blank"><i class="fa fa-download"></i> Tải PowerToys (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">10. Quản lý Ổ Đĩa</span></div>
+            <h3>Rufus (Tạo USB Boot)</h3>
+            <p class="desc">Công cụ Portable định dạng USB chuyên dụng trên Win. Dùng để burn file ISO cài đặt Windows hoặc WinPE cứu hộ.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://rufus.ie/vi/" target="_blank"><i class="fa fa-download"></i> Tải Rufus (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">11. Dọn dẹp rác</span></div>
+            <h3>Revo Uninstaller</h3>
+            <p class="desc">Chuyên trị phần mềm "cứng đầu" trên Win. Gỡ ứng dụng tận gốc rễ, quét sạch khóa Registry còn thừa.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.revouninstaller.com/products/revo-uninstaller-free/" target="_blank"><i class="fa fa-download"></i> Tải Revo (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">12. Hardware</span></div>
+            <h3>CrystalDiskInfo & CPU-Z</h3>
+            <p class="desc">Đọc thông số nội tạng máy tính Windows. Test tốc độ, tuổi thọ ổ cứng (SSD/HDD) và đo nhiệt độ, thông số RAM, CPU.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://download.com.vn/download/crystaldiskinfo-8644" target="_blank"><i class="fa fa-external-link"></i> Check Ổ Cứng (.exe)</a>
+              <a class="btn-download" href="https://www.cpuid.com/softwares/cpu-z.html" target="_blank"><i class="fa fa-external-link"></i> CPU-Z (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">13. Bảo mật hệ thống</span></div>
+            <h3>Kaspersky Standard (Win)</h3>
+            <p class="desc">Trình diệt virus lừng danh cho Windows. Cấu hình nhẹ, bảo vệ hệ thống khỏi ransomware mã hóa dữ liệu.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.kaspersky.com.vn/downloads" target="_blank"><i class="fa fa-external-link"></i> Tải Kaspersky (.exe)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">14. Lệnh Hệ Thống</span></div>
+            <h3>Tổng hợp Lệnh RUN</h3>
+            <p class="desc">Bí kíp 100+ lệnh (Win + R) mở nhanh các thiết lập ẩn sâu bên trong Windows dành riêng cho kỹ thuật viên.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.thegioididong.com/game-app/tong-hop-cac-lenh-run-thong-dung-trong-windows-10-ban-nen-1282407" target="_blank"><i class="fa fa-external-link"></i> Xem lệnh Windows</a>
+            </div>
+          </article>
+          
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">15. Kỹ thuật / CAD</span></div>
+            <h3>Bộ Font AutoCAD (.shx)</h3>
+            <p class="desc">Tổng hợp 2000+ Font SHX và TTF chuyên dụng cho dân xây dựng, cơ khí. Khắc phục 100% lỗi font bản vẽ CAD.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://drive.google.com/file/d/1rKu0HgOkxS1FSIUbx1VCiSeV2rkDL6aU/view?usp=drive_link"><i class="fa fa-google"></i> Tải trọn bộ Font CAD</a>
+              <details>
+                <summary>Cách cài Font CAD</summary>
+                <p>Copy toàn bộ file <code>.shx</code> dán vào thư mục <code>C:\Program Files\Autodesk\AutoCAD 20xx\Fonts</code>.</p>
+				  
+              </details>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">16. Kế toán / Thuế</span></div>
+            <h3>HTKK & iTaxViewer</h3>
+            <p class="desc">Bộ phần mềm Hỗ trợ kê khai thuế và đọc tờ khai định dạng XML chuẩn nhất từ Tổng cục Thuế Việt Nam.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.gdt.gov.vn/wps/portal/home/hotrokekhai"><i class="fa fa-download"></i> Tải HTKK </a>
+			  <a class="btn-download" href="https://download.com.vn/itaxviewer-93378"><i class="fa fa-download"></i> Tải iTaxViewer</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">17. Máy In / Photocopy</span></div>
+            <h3>Driver Canon, Ricoh, HP</h3>
+            <p class="desc">Bộ cài đặt Driver chuẩn cho các dòng máy in, máy photocopy phổ biến tại văn phòng. Hỗ trợ in qua mạng LAN (IP).</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://vn.canon/vi/support" target="_blank"><i class="fa fa-print"></i> Driver Canon</a>
+              <a class="btn-download" href="https://www.ricoh.com/support/" target="_blank"><i class="fa fa-print"></i> Driver Ricoh</a>
+              <a class="btn-download" href="https://support.hp.com/vn-en/drivers/printers" target="_blank"><i class="fa fa-print"></i> Driver HP</a>
+            </div>
+          </article>
+
+        </div>
+      </section>
+
+
+      <section class="mac-col">
+        <div class="os-header mac reveal" id="macHeader"><i class="fa fa-apple"></i> macOS</div>
+        <div class="d-grid-half" id="macGrid">
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">1. Giải nén (.dmg)</span></div>
+            <h3>The Unarchiver / Keka</h3>
+            <p class="desc">Tiện ích giải nén chuyên dụng của Mac. Hạn chế tối đa lỗi font tiếng Việt khi giải nén file RAR/ZIP từ Win gửi qua.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://theunarchiver.com/" target="_blank"><i class="fa fa-download"></i> Tải The Unarchiver (.dmg)</a>
+              <a class="btn-download" href="https://www.keka.io/en/" target="_blank"><i class="fa fa-download"></i> Tải Keka (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">2. Đồ họa / Văn bản</span></div>
+            <h3>Bộ Font Tiếng Việt (Mac)</h3>
+            <p class="desc">Bộ sưu tập Font việt hóa (SVN, UTM) đã được fix lỗi hiển thị trên hệ điều hành macOS, quản lý qua Font Book của Mac.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://download.com.vn/download/bo-font-utm-88870?linkid=11512"><i class="fa fa-google"></i> Tải trọn bộ Font Mac</a>
+              <details>
+                <summary>Cách cài Font trên Mac</summary>
+                <p>Mở <code>Font Book (Sổ Phông chữ)</code> -> Bấm dấu <code>+</code> và chọn thư mục font vừa giải nén để import.</p>
+              </details>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">3. Download Tốc Độ</span></div>
+            <h3>Free Download Manager (FDM)</h3>
+            <p class="desc">Do IDM không hỗ trợ Mac, FDM là giải pháp thay thế hoàn hảo nhất. Tăng tốc tải file, bắt link cực ngon trên Safari và Chrome.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.freedownloadmanager.org/mac-os-x.htm" target="_blank"><i class="fa fa-download"></i> Tải FDM (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">4. Tìm Kiếm Siêu Tốc</span></div>
+            <h3>Raycast / Alfred</h3>
+            <p class="desc">Ứng dụng thay thế Spotlight (Cmd + Space) thần thánh. Quản lý clipboard, tính toán, chuyển đổi tiền tệ siêu nhanh.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.raycast.com/" target="_blank"><i class="fa fa-download"></i> Tải Raycast (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">5. Văn phòng / PDF</span></div>
+            <h3>Foxit Reader / PDF Expert</h3>
+            <p class="desc">Trình xem và chỉnh sửa PDF cao cấp dành riêng cho Mac. Mượt mà, hỗ trợ ký tên điện tử nhanh chóng.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.foxit.com/pdf-reader/" target="_blank"><i class="fa fa-download"></i> Tải Foxit Reader (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">6. Code / Text Editor</span></div>
+            <h3>Sublime Text</h3>
+            <p class="desc">Vì Mac không có Notepad++, Sublime Text là lựa chọn số 1. Cực kỳ gọn nhẹ, khởi động tức thì, màu code đẹp.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.sublimetext.com/download" target="_blank"><i class="fa fa-download"></i> Tải Sublime Text (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">7. Hỗ trợ từ xa</span></div>
+            <h3>AnyDesk / TeamViewer</h3>
+            <p class="desc">Khuyên dùng AnyDesk trên Mac vì độ trễ thấp. Yêu cầu cấp quyền Screen Recording & Accessibility trong System Settings để hoạt động.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://anydesk.com/en/downloads/mac-os" target="_blank"><i class="fa fa-download"></i> Tải AnyDesk (.dmg)</a>
+              <a class="btn-download" href="https://www.teamviewer.com/en/download/mac-os/" target="_blank"><i class="fa fa-download"></i> Tải TeamViewer (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">8. Ngôn ngữ</span></div>
+            <h3>Sogou Pinyin (Mac)</h3>
+            <p class="desc">Bộ gõ tiếng Trung được tối ưu riêng biệt trên chip Apple Silicon (M1/M2/M3) và Intel. Trải nghiệm gõ mượt mà.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://shurufa.sogou.com/mac" target="_blank"><i class="fa fa-download"></i> Tải Sogou (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">9. Tối ưu năng suất</span></div>
+            <h3>Rectangle & Maccy</h3>
+            <p class="desc">Hai tiện ích thiết yếu: Rectangle giúp chia đôi, chia tư cửa sổ như Win. Maccy quản lý lịch sử Copy/Paste tuyệt đỉnh.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://rectangleapp.com/" target="_blank"><i class="fa fa-download"></i> Tải Rectangle (.dmg)</a>
+              <a class="btn-download" href="https://maccy.app/" target="_blank"><i class="fa fa-download"></i> Tải Maccy (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">10. Quản lý Ổ Đĩa</span></div>
+            <h3>Paragon NTFS & BalenaEtcher</h3>
+            <p class="desc">Paragon giúp Mac đọc/ghi trực tiếp USB NTFS của Windows. BalenaEtcher là phần mềm burn USB Boot số 1 trên Mac.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.paragon-software.com/home/ntfs-mac/" target="_blank"><i class="fa fa-download"></i> Tải Paragon NTFS (.dmg)</a>
+              <a class="btn-download" href="https://etcher.balena.io/" target="_blank"><i class="fa fa-download"></i> Tải BalenaEtcher (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">11. Dọn dẹp rác</span></div>
+            <h3>AppCleaner / CleanMyMac X</h3>
+            <p class="desc">Kéo app thả vào đây để gỡ sạch sẽ 100% rác cache trên Mac. Giải phóng hàng chục GB dung lượng cho ổ SSD.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://freemacsoft.net/appcleaner/" target="_blank"><i class="fa fa-download"></i> Tải AppCleaner (Free)</a>
+              <a class="btn-download" href="https://macpaw.com/cleanmymac" target="_blank"><i class="fa fa-external-link"></i> Web CleanMyMac X</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">12. Hardware</span></div>
+            <h3>iStat Menus / TG Pro</h3>
+            <p class="desc">Theo dõi thông số kỹ thuật ngay trên thanh Menu bar của Mac: Nhiệt độ CPU, tốc độ quạt gió, RAM và tình trạng Pin.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://bjango.com/mac/istatmenus/" target="_blank"><i class="fa fa-external-link"></i> Xem iStat Menus (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">13. Bảo mật hệ thống</span></div>
+            <h3>Kaspersky Standard (Mac)</h3>
+            <p class="desc">Bảo vệ Mac khỏi các phần mềm đào coin ẩn danh, chặn virus lây lan sang các máy Windows khác khi cắm USB.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.kaspersky.com.vn/mac-security" target="_blank"><i class="fa fa-external-link"></i> Tải Kaspersky (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">14. Lệnh Hệ Thống</span></div>
+            <h3>Lệnh Terminal & Phím Tắt</h3>
+            <p class="desc">Cẩm nang các câu lệnh Terminal để can thiệp hệ thống macOS (như tắt Gatekeeper, hiển thị file ẩn) và các tổ hợp phím tắt.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://support.apple.com/vi-vn/HT201236" target="_blank"><i class="fa fa-external-link"></i> Xem Phím tắt Apple</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">15. Kỹ thuật / CAD</span></div>
+            <h3>Bộ Font AutoCAD (Mac)</h3>
+            <p class="desc">Bộ Font SHX chuyên dụng giúp dân kỹ thuật mở bản vẽ AutoCAD trên MacBook không bị lỗi font chữ tiếng Việt.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://drive.google.com/file/d/1rKu0HgOkxS1FSIUbx1VCiSeV2rkDL6aU/view?usp=drive_link"><i class="fa fa-google"></i> Tải trọn bộ Font CAD</a>
+              <details>
+                <summary>Cách cài Font CAD (Mac)</summary>
+                <p>Chuột phải vào app AutoCAD -> Show Package Contents -> <code>Contents/Resources/Fonts/shx</code> và dán font vào.</p>
+              </details>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">16. Máy ảo / Kế toán</span></div>
+            <h3>Parallels Desktop (Chạy Win)</h3>
+            <p class="desc">Giải pháp số 1 để dân Kế toán dùng MacBook có thể chạy phần mềm thuế HTKK, iTaxViewer mượt mà như máy Windows.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://www.parallels.com/" target="_blank"><i class="fa fa-download"></i> Tải Parallels Desktop (.dmg)</a>
+            </div>
+          </article>
+
+          <article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">17. Máy In / Photocopy</span></div>
+            <h3>Driver Máy In cho macOS</h3>
+            <p class="desc">Bộ Driver hỗ trợ in ấn từ MacBook ra các dòng máy in, máy photocopy văn phòng (Canon, Ricoh). Khắc phục lỗi in không ra giấy.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://vn.canon/vi/support" target="_blank"><i class="fa fa-print"></i> Driver Canon (Mac)</a>
+              <a class="btn-download" href="https://www.ricoh.com/support/" target="_blank"><i class="fa fa-print"></i> Driver Ricoh (Mac)</a>
+              <a class="btn-download" href="https://support.hp.com/vn-en/drivers/printers" target="_blank"><i class="fa fa-print"></i> Driver HP (Mac)</a>
+            </div>
+          </article>
+<article class="d-card reveal tool-item">
+            <div class="card-tags"><span class="badge">17. Máy In / Photocopy</span></div>
+            <h3>Driver Máy In cho macOS</h3>
+            <p class="desc">Bộ Driver hỗ trợ in ấn từ MacBook ra các dòng máy in, máy photocopy văn phòng (Canon, Ricoh). Khắc phục lỗi in không ra giấy.</p>
+            <div class="card-actions">
+              <a class="btn-download" href="https://vn.canon/vi/support" target="_blank"><i class="fa fa-print"></i> Driver Canon (Mac)</a>
+              <a class="btn-download" href="https://www.ricoh.com/support/" target="_blank"><i class="fa fa-print"></i> Driver Ricoh (Mac)</a>
+              <a class="btn-download" href="https://support.hp.com/vn-en/drivers/printers" target="_blank"><i class="fa fa-print"></i> Driver HP (Mac)</a>
+            </div>
+          </article>
+        </div>
+      </section>
+
+    </div>
+  </main>
+
+  <footer>
+    <div class="social">
+      <a href="https://www.facebook.com/TuanHuy130" target="_blank" rel="noopener" aria-label="Facebook"><i class="fa fa-facebook"></i></a>
+      <a href="https://www.instagram.com/phanhoanghuy1510/" target="_blank" rel="noopener" aria-label="Instagram"><i class="fa fa-instagram"></i></a>
+      <a href="https://www.youtube.com/@PhanTuanHuy12" target="_blank" rel="noopener" aria-label="YouTube"><i class="fa fa-youtube-play"></i></a>
+    </div>
+    <small>© <span id="year"></span> Thiết kế bởi <b>Phan Tuấn Huy</b> — IT Support &amp; Technician.</small>
+  </footer>
+
+  <script>
+  (function () {
+    var sidebar = document.getElementById('sidebar');
+    var overlay = document.getElementById('overlay');
+
+    window.toggleSidebar = function (open) {
+      sidebar.classList.toggle('open', !!open);
+      overlay.classList.toggle('show', !!open);
+      document.body.style.overflow = open ? 'hidden' : '';
+    };
+
+    window.toggleDropdown = function (id, btn) {
+      var menu = document.getElementById(id);
+      var willOpen = !menu.classList.contains('open');
+      document.querySelectorAll('.dropdown-menu').forEach(function (m) { m.classList.remove('open'); });
+      document.querySelectorAll('.dropdown-btn').forEach(function (b) { b.classList.remove('active'); });
+      if (willOpen) { menu.classList.add('open'); btn.classList.add('active'); btn.setAttribute('aria-expanded', 'true'); }
+      else { btn.setAttribute('aria-expanded', 'false'); }
+    };
+
+    // Đóng sidebar bằng phím Esc
+    document.addEventListener('keydown', function (e) { if (e.key === 'Escape') toggleSidebar(false); });
+
+    // Theme toggle (nhớ lựa chọn của người dùng)
+    var themeBtn = document.getElementById('themeToggle');
+    var root = document.documentElement;
+    var saved = null;
+    try { saved = localStorage.getItem('pth-theme'); } catch (e) {}
+    if (saved === 'light' || saved === 'dark') root.setAttribute('data-theme', saved);
+    function syncThemeIcon() {
+      var dark = root.getAttribute('data-theme') !== 'light';
+      themeBtn.innerHTML = dark ? '<i class="fa fa-sun-o"></i>' : '<i class="fa fa-moon-o"></i>';
+    }
+    syncThemeIcon();
+    themeBtn.addEventListener('click', function () {
+      var next = root.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+      root.setAttribute('data-theme', next);
+      try { localStorage.setItem('pth-theme', next); } catch (e) {}
+      syncThemeIcon();
+    });
+
+    // Năm tự động ở footer
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // Hiệu ứng hiện dần khi cuộn
+    if ('IntersectionObserver' in window) {
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+      }, { threshold: 0.12 });
+      document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+    } else {
+      document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+    }
+    // Fallback: nếu IntersectionObserver không kích hoạt kịp, hiện hết sau 1.5s
+    setTimeout(function () {
+      document.querySelectorAll('.reveal:not(.in)').forEach(function (el) { el.classList.add('in'); });
+    }, 1500);
+  })();
+  </script>
+<script>
+function filterTools() {
+  var query = document.getElementById('searchInput').value.toLowerCase().trim();
+  var tools = document.querySelectorAll('.tool-item');
+  var visibleCount = 0;
+  tools.forEach(function (tool) {
+    if (tool.textContent.toLowerCase().includes(query)) { tool.style.display = 'flex'; visibleCount++; }
+    else { tool.style.display = 'none'; }
+  });
+  var noResultsMsg = document.getElementById('noResultsMsg');
+  var winHeader = document.getElementById('winHeader');
+  var macHeader = document.getElementById('macHeader');
+  if (visibleCount === 0 && query !== '') {
+    noResultsMsg.style.display = 'block';
+    if (winHeader) winHeader.style.display = 'none';
+    if (macHeader) macHeader.style.display = 'none';
+  } else {
+    noResultsMsg.style.display = 'none';
+    if (winHeader) winHeader.style.display = 'flex';
+    if (macHeader) macHeader.style.display = 'flex';
+  }
+}
+</script>
+<script>
+(function(){
+  var tiltables = document.querySelectorAll('.card, .d-card, .data-category-card, .srv-card, .feat-card, .c-card, .pay-card');
+  tiltables.forEach(function(card){
+    card.addEventListener('mouseenter', function(){ card.style.transition = 'transform .18s ease-out'; });
+    card.addEventListener('mousemove', function(e){
+      var r = card.getBoundingClientRect();
+      var x = e.clientX - r.left, y = e.clientY - r.top;
+      card.style.setProperty('--mx', x + 'px');
+      card.style.setProperty('--my', y + 'px');
+      var rx = ((y / r.height) - 0.5) * -7;
+      var ry = ((x / r.width) - 0.5) * 7;
+      card.style.transform = 'perspective(900px) rotateX(' + rx + 'deg) rotateY(' + ry + 'deg) translateY(-6px)';
+    });
+    card.addEventListener('mouseleave', function(){
+      card.style.transition = 'transform .5s cubic-bezier(.2,.8,.2,1)';
+      card.style.transform = '';
+      setTimeout(function(){ card.style.transition = ''; }, 500);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>
